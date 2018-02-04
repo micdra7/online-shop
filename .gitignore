@@ -1,0 +1,4 @@
+.idea
+src/main/resources/images
+src/main/resources/db.properties
+**/*.properties

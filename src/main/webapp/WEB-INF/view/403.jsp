@@ -3,7 +3,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
-<html lang="en" class="has-navbar-fixed-top">
+<html lang="pl" class="has-navbar-fixed-top">
     <head>
         <meta charset="utf-8">
         <meta name="author" content="Michał Drabik">
@@ -61,8 +61,8 @@
             </div>
         </nav>
         <section class="section">
-            <div class="box container">
-                <h1 class="tile is-danger">You are not authorized to access this resource</h1>
+            <div class="box container has-text-centered">
+                <h1 class="title has-text-danger">You are not authorized to access this resource</h1>
                 <h4 class="subtitle">If you believe this is an error please contact our team</h4>
             </div>
         </section>
@@ -70,7 +70,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by Michał Drabik.
+                        <strong>Online PC shop</strong> by Michal Drabik.
                     </p>
                     <p>
                         <a href="https://bulma.io">

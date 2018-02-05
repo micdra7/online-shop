@@ -3,7 +3,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
-<html lang="en" class="has-navbar-fixed-top">
+<html lang="pl" class="has-navbar-fixed-top">
     <head>
         <meta charset="utf-8">
         <meta name="author" content="Michał Drabik">
@@ -64,7 +64,7 @@
             <div class="box container">
                 <h1 class="title">Recently purchased</h1>
                 <c:forEach var="item" items="${products}">
-                    <div class="notification is-info is-inversed">
+                    <div class="notification is-info">
                         <div class="media">
                             <div class="media-content">
                                 <h4 class="subtitle">
@@ -86,7 +86,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by Michał Drabik.
+                        <strong>Online PC shop</strong> by Michal Drabik.
                     </p>
                     <p>
                         <a href="https://bulma.io">

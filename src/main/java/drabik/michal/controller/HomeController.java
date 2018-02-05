@@ -1,7 +1,6 @@
 package drabik.michal.controller;
 
 import drabik.michal.entity.Order;
-import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.Product;
 import drabik.michal.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

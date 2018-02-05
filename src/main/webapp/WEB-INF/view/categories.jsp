@@ -3,7 +3,7 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
-<html lang="en" class="has-navbar-fixed-top">
+<html lang="pl" class="has-navbar-fixed-top">
     <head>
         <meta charset="utf-8">
         <meta name="author" content="Michał Drabik">
@@ -64,25 +64,25 @@
             <div class="box container">
                 <h1 class="title">Categories</h1>
                 <c:forEach var="item" items="${categories}">
-                    <div class="notification is-info is-inversed">
+                    <div class="notification is-white">
                         <div class="media">
                             <div class="media-content">
-                                <ul>
-                                    <li>
+                                <div class="menu">
+                                    <p class="menu-label">
                                         <a href="${pageContext.request.contextPath}/categories?id=${item.id}">
                                             ${item.name}
                                         </a>
-                                        <ul>
-                                            <c:forEach var="subitem" items="${item.subcategories}">
-                                                <li>
-                                                    <a href="${pageContext.request.contextPath}/subcategories?id=${subitem.id}">
-                                                        ${subitem.name}
-                                                    </a>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                    </p>
+                                    <ul class="menu-list">
+                                        <c:forEach var="subitem" items="${item.subcategories}">
+                                            <li>
+                                                <a href="${pageContext.request.contextPath}/subcategories?id=${subitem.id}">
+                                                    ${subitem.name}
+                                                </a>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by Michał Drabik.
+                        <strong>Online PC shop</strong> by Michal Drabik.
                     </p>
                     <p>
                         <a href="https://bulma.io">

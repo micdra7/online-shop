@@ -20,8 +20,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER,
-            mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetails details;
 
     @ManyToMany(fetch = FetchType.EAGER,

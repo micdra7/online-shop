@@ -32,7 +32,7 @@ public class UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 

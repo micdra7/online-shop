@@ -36,8 +36,7 @@ public class Product implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<OrderDetails> details;
 
-    @ManyToOne(fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 

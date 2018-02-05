@@ -1,15 +1,18 @@
 package drabik.michal.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "username")
     private String username;
@@ -17,35 +20,42 @@ public class Users {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserDetails> details;
+    @OneToOne(fetch = FetchType.EAGER,
+            mappedBy = "user", cascade = CascadeType.ALL)
+    private UserDetails details;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Roles> roles;
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Role> roles;
 
-    @OneToMany(mappedBy = "user",
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Orders> orders;
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Order> orders;
 
-    @OneToMany(mappedBy = "user",
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Reviews> reviews;
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Review> reviews;
 
-    public Users() {}
+    public User() {}
 
-    public Users(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,35 +75,35 @@ public class Users {
         this.password = password;
     }
 
-    public List<Roles> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Roles> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
-    public List<UserDetails> getDetails() {
+    public UserDetails getDetails() {
         return details;
     }
 
-    public void setDetails(List<UserDetails> details) {
+    public void setDetails(UserDetails details) {
         this.details = details;
     }
 
-    public List<Orders> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Orders> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 
-    public List<Reviews> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Reviews> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 }

@@ -1,21 +1,19 @@
 package drabik.michal.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "products")
-public class Products implements Serializable {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "subcategory_id")
-    private int subcategoryId;
+    private Long id;
 
     @Column(name = "producer")
     private String producer;
@@ -27,26 +25,31 @@ public class Products implements Serializable {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "quantity")
-    private long quantity;
+    private Long quantity;
 
-    @OneToMany(mappedBy = "product",
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private OrderDetails details;
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<OrderDetails> details;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "subcategory_id")
-    private Subcategories subcategory;
+    private Subcategory subcategory;
 
-    @OneToMany(mappedBy = "product",
+    @OneToMany(fetch = FetchType.EAGER,
+            mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Reviews> reviews;
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Review> reviews;
 
-    public Products() {}
+    public Product() {}
 
-    public Products(String producer, String name, String description, double price, long quantity) {
+    public Product(String producer, String name, String description, double price, long quantity) {
         this.producer = producer;
         this.name = name;
         this.description = description;
@@ -54,20 +57,12 @@ public class Products implements Serializable {
         this.quantity = quantity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getSubcategoryId() {
-        return subcategoryId;
-    }
-
-    public void setSubcategoryId(int subcategoryId) {
-        this.subcategoryId = subcategoryId;
     }
 
     public String getProducer() {
@@ -94,35 +89,35 @@ public class Products implements Serializable {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public long getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(long quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 
-    public OrderDetails getDetails() {
+    public List<OrderDetails> getDetails() {
         return details;
     }
 
-    public void setDetails(OrderDetails details) {
+    public void setDetails(List<OrderDetails> details) {
         this.details = details;
     }
 
-    public Subcategories getSubcategory() {
+    public Subcategory getSubcategory() {
         return subcategory;
     }
 
-    public void setSubcategory(Subcategories subcategory) {
+    public void setSubcategory(Subcategory subcategory) {
         this.subcategory = subcategory;
     }
 }

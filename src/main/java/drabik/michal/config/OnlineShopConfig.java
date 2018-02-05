@@ -2,7 +2,6 @@ package drabik.michal.config;
 
 import drabik.michal.entity.*;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +13,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
@@ -24,7 +25,7 @@ import java.util.Properties;
 @ComponentScan(basePackages = "drabik.michal")
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-public class OnlineShopConfig {
+public class OnlineShopConfig extends WebMvcConfigurerAdapter{
 
     @Autowired
     private Environment environment;
@@ -38,7 +39,7 @@ public class OnlineShopConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource getDataSource() {
         BasicDataSource source = new BasicDataSource();
         source.setDriverClassName(environment.getProperty("db.driver"));
         source.setUrl(environment.getProperty("db.url"));
@@ -48,26 +49,34 @@ public class OnlineShopConfig {
     }
 
     @Bean("sessionFactory")
-    public LocalSessionFactoryBean sessionFactory() {
+    public LocalSessionFactoryBean getSessionFactory() {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
-        bean.setDataSource(dataSource());
+        bean.setDataSource(getDataSource());
         bean.setPackagesToScan("drabik.michal");
 
         Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.connection.pool_size", environment.getProperty("hibernate.connection.pool_size"));
 
         bean.setHibernateProperties(properties);
-        bean.setAnnotatedClasses(Categories.class, OrderDetails.class, Orders.class, Products.class, Reviews.class,
-                Roles.class, Subcategories.class, UserDetails.class, Users.class);
+        bean.setAnnotatedClasses(Category.class, OrderDetails.class, Order.class, Product.class, Review.class,
+                Role.class, Subcategory.class, UserDetails.class, User.class);
         return bean;
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager() {
+    public HibernateTransactionManager getTransactionManager() {
         HibernateTransactionManager manager = new HibernateTransactionManager();
-        manager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager();
+        manager.setSessionFactory(getSessionFactory().getObject());
+        return manager;
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
 }

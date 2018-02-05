@@ -1,46 +1,44 @@
 package drabik.michal.dao;
 
-import drabik.michal.entity.Users;
+import drabik.michal.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class UsersDAOimpl implements UsersDAO{
+public class UserDAOimpl implements UserDAO {
 
     @Autowired
-    @Qualifier("sessionFactory")
     private SessionFactory sessionFactory;
 
-    public UsersDAOimpl() {
+    public UserDAOimpl() {
         System.out.println("dao impl created");
     }
 
-    public void addUser(Users user) {
+    public void addUser(User user) {
         sessionFactory.getCurrentSession().save(user);
     }
 
-    public Users getUser(long id) {
-        return sessionFactory.getCurrentSession().get(Users.class, id);
+    public User getUser(long id) {
+        return sessionFactory.getCurrentSession().get(User.class, id);
     }
 
-    public List<Users> getAllUsers() {
-        Query<Users> query = sessionFactory.getCurrentSession().createQuery("from users");
+    public List<User> getAllUsers() {
+        Query<User> query = sessionFactory.getCurrentSession().createQuery("from users");
         return query.getResultList();
     }
 
     public void deleteUser(long id) {
         Session session = sessionFactory.getCurrentSession();
-        Users user = session.get(Users.class, id);
+        User user = session.get(User.class, id);
         session.delete(user);
     }
 
-    public void updateUser(Users user) {
+    public void updateUser(User user) {
         sessionFactory.getCurrentSession().update(user);
     }
 }

@@ -6,6 +6,11 @@ import javax.persistence.*;
 @Table(name = "user_details")
 public class UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private Long id;
+
     @Column(name = "name")
     private String name;
 
@@ -16,10 +21,10 @@ public class UserDetails {
     private String street;
 
     @Column(name = "house_number")
-    private int houseNumber;
+    private Integer houseNumber;
 
     @Column(name = "flat_number")
-    private int flat_number;
+    private Integer flat_number;
 
     @Column(name = "email")
     private String email;
@@ -27,9 +32,9 @@ public class UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     public UserDetails() {}
 
@@ -41,6 +46,14 @@ public class UserDetails {
         this.flat_number = flat_number;
         this.email = email;
         this.phone = phone;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -67,19 +80,19 @@ public class UserDetails {
         this.street = street;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getFlat_number() {
+    public Integer getFlat_number() {
         return flat_number;
     }
 
-    public void setFlat_number(int flat_number) {
+    public void setFlat_number(Integer flat_number) {
         this.flat_number = flat_number;
     }
 
@@ -99,11 +112,11 @@ public class UserDetails {
         this.phone = phone;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

@@ -14,10 +14,6 @@ public class UserServiceImpl implements drabik.michal.service.UserService {
     @Autowired
     private UserDAO dao;
 
-    public UserServiceImpl() {
-        System.out.println("service created");
-    }
-
     @Transactional
     public void addUser(User user) {
         dao.addUser(user);
@@ -26,6 +22,11 @@ public class UserServiceImpl implements drabik.michal.service.UserService {
     @Transactional
     public User getUser(long id) {
         return dao.getUser(id);
+    }
+
+    @Transactional
+    public User getUser(String username) {
+        return dao.getUser(username);
     }
 
     @Transactional

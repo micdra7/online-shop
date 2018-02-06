@@ -1,31 +1,41 @@
 package drabik.michal.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
 
-        auth.inMemoryAuthentication()
-                .withUser(users.username("john").password("test").roles("CUSTOMER"))
-                .withUser(users.username("mike").password("test").roles("ADMIN"));
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").anonymous()
-                .antMatchers("/categories/**").anonymous()
-                .antMatchers("/register").anonymous()
-                .antMatchers("/log-in").anonymous()
+                .antMatchers("/").permitAll()
+                .antMatchers("/categories/**").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/log-in").permitAll()
                 .antMatchers("/cart").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers("/user/**").hasAnyRole("CUSTOMER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -34,14 +44,22 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/log-in")
                 .loginProcessingUrl("/authenticate")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .failureForwardUrl("/log-in-failure")
+                .successForwardUrl("/")
                 .permitAll()
 
                 .and()
                 .logout()
+                .logoutUrl("/")
                 .permitAll()
 
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/403");
+                .accessDeniedPage("/403")
+
+                .and()
+                .csrf();
     }
 }

@@ -10,6 +10,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -39,7 +42,7 @@ public class OnlineShopConfig extends WebMvcConfigurerAdapter{
     }
 
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         BasicDataSource source = new BasicDataSource();
         source.setDriverClassName(environment.getProperty("db.driver"));
         source.setUrl(environment.getProperty("db.url"));
@@ -48,10 +51,27 @@ public class OnlineShopConfig extends WebMvcConfigurerAdapter{
         return source;
     }
 
-    @Bean("sessionFactory")
-    public LocalSessionFactoryBean getSessionFactory() {
+    @Bean
+    public UserDetailsService userDetailsService() {
+        JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
+        jdbcDao.setDataSource(dataSource());
+        jdbcDao.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?");
+        jdbcDao.setAuthoritiesByUsernameQuery("SELECT users.username, roles.name FROM" +
+                " users INNER JOIN user_roles ON users.id=user_roles.user_id " +
+                "INNER JOIN roles ON user_roles.role_id=roles.id " +
+                "WHERE users.username=?");
+        return jdbcDao;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
-        bean.setDataSource(getDataSource());
+        bean.setDataSource(dataSource());
         bean.setPackagesToScan("drabik.michal");
 
         Properties properties = new Properties();
@@ -67,9 +87,9 @@ public class OnlineShopConfig extends WebMvcConfigurerAdapter{
     }
 
     @Bean
-    public HibernateTransactionManager getTransactionManager() {
+    public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager manager = new HibernateTransactionManager();
-        manager.setSessionFactory(getSessionFactory().getObject());
+        manager.setSessionFactory(sessionFactory().getObject());
         return manager;
     }
 

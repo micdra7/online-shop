@@ -6,12 +6,12 @@ import org.springframework.web.servlet.support.AbstractDispatcherServletInitiali
 public class DispatcherInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[0];
+        return new Class[] {OnlineShopConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] {OnlineShopConfig.class};
+        return new Class[] {};
     }
 
     @Override

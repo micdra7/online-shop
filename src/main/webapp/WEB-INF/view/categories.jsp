@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="navbar-end">
-                    <a class="navbar-item" href="${pageContext.request.contextPath}/register">
+                    <a class="navbar-item" href="${pageContext.request.contextPath}/register-form">
                         Register
                     </a>
                     <div class="navbar-item">
@@ -93,7 +93,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by Michal Drabik.
+                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7">Michal Drabik</a>.
                     </p>
                     <p>
                         <a href="https://bulma.io">

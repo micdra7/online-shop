@@ -49,14 +49,24 @@
                     </a>
                 </div>
                 <div class="navbar-end">
-                    <a class="navbar-item" href="${pageContext.request.contextPath}/register">
-                        Register
-                    </a>
-                    <div class="navbar-item">
-                        <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/log-in">
-                            Log in
+                    <security:authorize access="hasAnyRole('CUSTOMER','ADMIN')">
+                        <c:set var="user">
+                            <security:authentication property="principal.username"/>
+                        </c:set>
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/user/username=${user}">
+                            Welcome, ${user}
                         </a>
-                    </div>
+                    </security:authorize>
+                    <security:authorize access="isAnonymous()">
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/register-form">
+                            Register
+                        </a>
+                        <div class="navbar-item">
+                            <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/log-in">
+                                Log in
+                            </a>
+                        </div>
+                    </security:authorize>
                 </div>
             </div>
         </nav>
@@ -86,7 +96,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by Michal Drabik.
+                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7">Michal Drabik</a>.
                     </p>
                     <p>
                         <a href="https://bulma.io">

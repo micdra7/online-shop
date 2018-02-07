@@ -23,7 +23,7 @@
                 <a class="navbar-item" href="${pageContext.request.contextPath}/">
                     <img src="${pageContext.request.contextPath}/resources/images/logo/laptop.svg" alt="Logo" width="64" height="64">
                 </a>
-                <security:authorize access="hasAnyRole('CUSTOMER','ADMIN')">
+                <security:authorize access="isAuthenticated()">
                     <div class="navbar-item">
                         <span class="button is-info is-inverted">
                             <a href="${pageContext.request.contextPath}/cart">
@@ -49,14 +49,29 @@
                     </a>
                 </div>
                 <div class="navbar-end">
-                    <a class="navbar-item" href="${pageContext.request.contextPath}/register-form">
-                        Register
-                    </a>
-                    <div class="navbar-item">
-                        <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/log-in">
-                            Log in
+                    <security:authorize access="isAuthenticated()">
+                        <c:set var="user">
+                            <security:authentication property="principal.username"/>
+                        </c:set>
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/user?username=${user}">
+                            Welcome, ${user}
                         </a>
-                    </div>
+                        <div class="navbar-item">
+                            <form:form action="${pageContext.request.contextPath}/logout" method="post">
+                                <input type="submit" value="Log out" class="button is-info is-inverted">
+                            </form:form>
+                        </div>
+                    </security:authorize>
+                    <security:authorize access="isAnonymous()">
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/register-form">
+                            Register
+                        </a>
+                        <div class="navbar-item">
+                            <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/log-in">
+                                Log in
+                            </a>
+                        </div>
+                    </security:authorize>
                 </div>
             </div>
         </nav>
@@ -64,9 +79,9 @@
             <div class="box container">
                 <div class="columns">
                     <div class="column">
-                        <c:if test="${error.username != null}">
+                        <c:if test="${param.error != null}">
                             <div class="notification is-danger has-text-centered">
-                                <p class="subtitle">${error.username}</p>
+                                <p class="subtitle">Invalid username and/or password</p>
                             </div>
                         </c:if>
                         <h1 class="title">Log in form</h1>
@@ -111,7 +126,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7">Michal Drabik</a>.
+                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7" target="_blank">Michal Drabik</a>.
                     </p>
                     <p>
                         <a href="https://bulma.io">

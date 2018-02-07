@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -32,13 +34,15 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
                 .antMatchers("/categories/**").permitAll()
                 .antMatchers("/register").anonymous()
                 .antMatchers("/log-in").anonymous()
-                .antMatchers("/cart").hasAnyRole("CUSTOMER", "ADMIN")
-                .antMatchers("/user/**").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers("/subcategories").permitAll()
+                .antMatchers("/product").permitAll()
+                .antMatchers("/cart").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/").permitAll()
 
                 .and()
                 .formLogin()
@@ -50,8 +54,6 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/log-in")
                 .permitAll()
 
                 .and()

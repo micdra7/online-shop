@@ -21,7 +21,7 @@ public class CategoryDAOimpl implements CategoryDAO {
     }
 
     @Override
-    public Category getCategory(long id) {
+    public Category getCategory(int id) {
         return factory.getCurrentSession().get(Category.class, id);
     }
 
@@ -32,7 +32,7 @@ public class CategoryDAOimpl implements CategoryDAO {
     }
 
     @Override
-    public void deleteCategory(long id) {
+    public void deleteCategory(int id) {
         Session session = factory.getCurrentSession();
         Category category = session.get(Category.class, id);
         session.delete(category);

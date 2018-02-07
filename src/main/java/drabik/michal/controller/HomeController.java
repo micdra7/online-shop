@@ -26,7 +26,7 @@ public class HomeController {
         List<Order> orders = service.getAllOrders();
 
         int orderCounter = 1;
-        List<Product> recent = Collections.synchronizedList(new ArrayList<>());
+        List<Product> recent = new ArrayList<>();
 
         for (Order order : orders) {
             Calendar orderDate = Calendar.getInstance();

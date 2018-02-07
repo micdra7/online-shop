@@ -2,6 +2,7 @@ package drabik.michal.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "reviews")
@@ -16,6 +17,10 @@ public class Review implements Serializable {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
@@ -54,6 +59,14 @@ public class Review implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public User getUser() {

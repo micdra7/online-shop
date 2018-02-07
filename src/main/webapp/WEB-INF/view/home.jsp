@@ -23,7 +23,7 @@
                 <a class="navbar-item" href="${pageContext.request.contextPath}/">
                     <img src="${pageContext.request.contextPath}/resources/images/logo/laptop.svg" alt="Logo" width="64" height="64">
                 </a>
-                <security:authorize access="hasAnyRole('CUSTOMER','ADMIN')">
+                <security:authorize access="isAuthenticated()">
                     <div class="navbar-item">
                         <span class="button is-info is-inverted">
                             <a href="${pageContext.request.contextPath}/cart">
@@ -49,13 +49,18 @@
                     </a>
                 </div>
                 <div class="navbar-end">
-                    <security:authorize access="hasAnyRole('CUSTOMER','ADMIN')">
+                    <security:authorize access="isAuthenticated()">
                         <c:set var="user">
                             <security:authentication property="principal.username"/>
                         </c:set>
-                        <a class="navbar-item" href="${pageContext.request.contextPath}/user/username=${user}">
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/user?username=${user}">
                             Welcome, ${user}
                         </a>
+                        <div class="navbar-item">
+                            <form:form action="${pageContext.request.contextPath}/logout" method="post">
+                                <input type="submit" value="Log out" class="button is-info is-inverted">
+                            </form:form>
+                        </div>
                     </security:authorize>
                     <security:authorize access="isAnonymous()">
                         <a class="navbar-item" href="${pageContext.request.contextPath}/register-form">
@@ -96,7 +101,7 @@
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
-                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7">Michal Drabik</a>.
+                        <strong>Online PC shop</strong> by <a class="link" href="https://github.com/micdra7" target="_blank">Michal Drabik</a>.
                     </p>
                     <p>
                         <a href="https://bulma.io">

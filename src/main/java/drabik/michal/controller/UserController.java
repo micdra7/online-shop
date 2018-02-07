@@ -1,5 +1,6 @@
 package drabik.michal.controller;
 
+import drabik.michal.entity.Role;
 import drabik.michal.entity.User;
 import drabik.michal.entity.UserDetails;
 import drabik.michal.service.UserService;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
 
 @Controller
 public class UserController {
@@ -30,25 +33,6 @@ public class UserController {
     public String logIn(Model model) {
         model.addAttribute("user", new User());
         return "log-in";
-    }
-
-    @RequestMapping("/authenticate")
-    public String logInFailure(@RequestParam("username") String username,
-                               @RequestParam("password") String password,
-                               Model model) {
-        UserDataError error = new UserDataError("","");
-
-        if (service.getUser(username) == null) {
-            error.setUsername(UserDataError.INCORRECT_USERNAME_OR_PASSWORD);
-        }
-
-        if (error.getUsername() != null) {
-            model.addAttribute("user", new User(username, ""));
-            model.addAttribute("error", error);
-            return "log-in";
-        } else {
-            return "home";
-        }
     }
 
     @RequestMapping("/logout")
@@ -87,8 +71,11 @@ public class UserController {
             return "register";
         } else {
             User toAdd = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
+            ArrayList<Role> roles = new ArrayList<>();
+            roles.add(new Role("CUSTOMER"));
             toAdd.setEnabled(1);
             toAdd.setDetails(details);
+            toAdd.setRoles(roles);
             service.addUser(toAdd);
             model.addAttribute("user", new User(user.getUsername(), ""));
             return "redirect:/logout";

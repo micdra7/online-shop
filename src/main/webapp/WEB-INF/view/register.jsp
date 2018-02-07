@@ -62,56 +62,131 @@
         </nav>
         <section class="section">
             <div class="box container">
-                <div class="columns">
-                    <div class="column">
-                        <c:choose>
-                            <c:when test="${error.username != null}">
-                                <div class="notification is-danger has-text-centered">
-                                    <p class="subtitle">${error.username}</p>
-                                </div>
-                            </c:when>
-                            <c:when test="${error.password != null}">
-                                <div class="notification is-danger has-text-centered">
-                                    <p class="subtitle">${error.password}</p>
-                                </div>
-                            </c:when>
-                        </c:choose>
-                        <h1 class="title">Registration form</h1>
-                        <div class="level">
-                            <div class="level-item">
-                                <form:form action="${pageContext.request.contextPath}/register" method="post" modelAttribute="user">
-                                    <div class="field">
-                                        <label class="label">Username</label>
-                                        <p class="control has-icons-left">
-                                            <form:input path="username" cssClass="input"/>
-                                            <span class="icon is-small is-left">
-                                                <i class="fas fa-user"></i>
-                                            </span>
-                                        </p>
+                <form:form action="${pageContext.request.contextPath}/register" method="post" modelAttribute="user" id="registrationForm">
+                    <div class="columns">
+                        <div class="column">
+                            <c:choose>
+                                <c:when test="${error.username != null}">
+                                    <div class="notification is-danger has-text-centered">
+                                        <p class="subtitle">${error.username}</p>
                                     </div>
-                                    <div class="field">
-                                        <label class="label">Password</label>
-                                        <p class="control has-icons-left">
-                                            <form:password path="password" cssClass="input"/>
-                                            <span class="icon is-small is-left">
-                                                <i class="fas fa-lock"></i>
-                                            </span>
-                                        </p>
+                                </c:when>
+                                <c:when test="${error.password != null}">
+                                    <div class="notification is-danger has-text-centered">
+                                        <p class="subtitle">${error.password}</p>
                                     </div>
-                                    <div class="field">
-                                        <div class="level">
-                                            <div class="level-item">
-                                                <p class="control">
-                                                    <button class="button is-info">Register</button>
+                                </c:when>
+                            </c:choose>
+                            <div class="level">
+                                <div class="level-item">
+                                    <div class="columns">
+                                        <div class="column">
+                                            <h1 class="title is-spaced">Registration form</h1>
+                                            <h4 class="subtitle">Fields marked with <sup>*</sup> are required</h4>
+                                            <div class="field">
+                                                <label class="label">Username<sup>*</sup></label>
+                                                <p class="control has-icons-left">
+                                                    <form:input path="username" cssClass="input"/>
+                                                    <span class="icon is-small is-left">
+                                                        <i class="fas fa-user"></i>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label">Password<sup>*</sup></label>
+                                                <p class="control has-icons-left">
+                                                    <form:password path="password" cssClass="input"/>
+                                                    <span class="icon is-small is-left">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                </form:form>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="column">
+                            <form:form action="${pageContext.request.contextPath}/register" method="post" modelAttribute="userDetails">
+                                <div class="field">
+                                    <label class="label">Name<sup>*</sup></label>
+                                    <p class="control">
+                                        <form:input path="name" cssClass="input"/>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Surname<sup>*</sup></label>
+                                    <p class="control">
+                                        <form:input path="surname" cssClass="input"/>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Email<sup>*</sup></label>
+                                    <p class="control has-icons-left">
+                                        <form:input path="email" cssClass="input"/>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Phone</label>
+                                    <p class="control has-icons-left">
+                                        <form:input path="phone" cssClass="input"/>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-phone"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Country<sup>*</sup></label>
+                                    <p class="control has-icons-left">
+                                        <form:input path="country" cssClass="input"/>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-globe"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">City<sup>*</sup></label>
+                                    <p class="control">
+                                        <form:input path="city" cssClass="input"/>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Street<sup>*</sup></label>
+                                    <p class="control has-icons-left">
+                                        <form:input path="street" cssClass="input"/>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-road"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">House number<sup>*</sup></label>
+                                    <p class="control">
+                                        <form:input path="houseNumber" cssClass="input"/>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Flat number</label>
+                                    <p class="control">
+                                        <form:input path="flatNumber" cssClass="input"/>
+                                    </p>
+                                </div>
+                            </form:form>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="level">
+                            <div class="level-item">
+                                <p class="control">
+                                    <input type="submit" class="button is-info" value="Register" form="registrationForm">
+                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form:form>    
             </div>
         </section>
         <footer class="footer">

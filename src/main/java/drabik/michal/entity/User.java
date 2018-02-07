@@ -20,6 +20,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled")
+    private Integer enabled;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetails details;
 
@@ -72,6 +75,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
     }
 
     public List<Role> getRoles() {

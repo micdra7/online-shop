@@ -17,6 +17,12 @@ public class UserDetails {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "city")
+    private String city;
+
     @Column(name = "street")
     private String street;
 
@@ -24,7 +30,7 @@ public class UserDetails {
     private Integer houseNumber;
 
     @Column(name = "flat_number")
-    private Integer flat_number;
+    private Integer flatNumber;
 
     @Column(name = "email")
     private String email;
@@ -35,18 +41,6 @@ public class UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public UserDetails() {}
-
-    public UserDetails(String name, String surname, String street, int houseNumber, int flat_number, String email, String phone) {
-        this.name = name;
-        this.surname = surname;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.flat_number = flat_number;
-        this.email = email;
-        this.phone = phone;
-    }
 
     public Long getId() {
         return id;
@@ -72,6 +66,22 @@ public class UserDetails {
         this.surname = surname;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public String getStreet() {
         return street;
     }
@@ -88,12 +98,12 @@ public class UserDetails {
         this.houseNumber = houseNumber;
     }
 
-    public Integer getFlat_number() {
-        return flat_number;
+    public Integer getFlatNumber() {
+        return flatNumber;
     }
 
-    public void setFlat_number(Integer flat_number) {
-        this.flat_number = flat_number;
+    public void setFlatNumber(Integer flatNumber) {
+        this.flatNumber = flatNumber;
     }
 
     public String getEmail() {

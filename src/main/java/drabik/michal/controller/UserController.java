@@ -1,8 +1,10 @@
 package drabik.michal.controller;
 
+import drabik.michal.entity.Order;
 import drabik.michal.entity.Role;
 import drabik.michal.entity.User;
 import drabik.michal.entity.UserDetails;
+import drabik.michal.service.OrderService;
 import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 @Controller
 public class UserController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+    @Autowired
+    private OrderService orderService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @RequestMapping("/user")
-    public String user(Model model) {
-        model.addAttribute("user", new User());
+    public String user(@RequestParam("username") String username,
+                       @RequestParam("page") Integer page,
+                       Model model) {
+        displayUserPage(username, page, model);
         return "user";
     }
 
@@ -57,7 +64,7 @@ public class UserController {
 
     private String processRegistration(User user, UserDetails details, Model model) {
         UserDataError error = new UserDataError();
-        if (service.getUser(user.getUsername()) != null) {
+        if (userService.getUser(user.getUsername()) != null) {
             error.setUsername(UserDataError.EXISTING_USERNAME);
         }
         if (user.getPassword().length() < 8) {
@@ -76,9 +83,30 @@ public class UserController {
             toAdd.setEnabled(1);
             toAdd.setDetails(details);
             toAdd.setRoles(roles);
-            service.addUser(toAdd);
+            userService.addUser(toAdd);
             model.addAttribute("user", new User(user.getUsername(), ""));
             return "redirect:/logout";
+        }
+    }
+
+    private void displayUserPage(String username, Integer page, Model model) {
+        User user = userService.getUser(username);
+
+        if (page == 1) {
+            if (user == null) {
+                System.err.println("\n\nUSER IS NULL\n\n");
+            }
+            if (user.getDetails() == null) {
+                System.err.println("\n\nUSERDETAILS ARE NULL\n\n");
+            }
+            model.addAttribute("userDetails", user.getDetails());
+            model.addAttribute("orders", new LinkedList<Order>());
+        } else if (page == 2) {
+            model.addAttribute("userDetails", new UserDetails());
+            model.addAttribute("orders", orderService.getOrdersForUser(user));
+        } else {
+            model.addAttribute("userDetails", new UserDetails());
+            model.addAttribute("orders", new LinkedList<Order>());
         }
     }
 

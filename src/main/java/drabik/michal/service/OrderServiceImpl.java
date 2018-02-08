@@ -2,6 +2,7 @@ package drabik.michal.service;
 
 import drabik.michal.dao.OrderDAO;
 import drabik.michal.entity.Order;
+import drabik.michal.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders() {
         return dao.getAllOrders();
+    }
+
+    @Transactional
+    @Override
+    public List<Order> getOrdersForUser(User user) {
+        return dao.getOrdersForUser(user);
     }
 
     @Transactional

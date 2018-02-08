@@ -6,13 +6,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +35,8 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/subcategories").permitAll()
                 .antMatchers("/product").permitAll()
                 .antMatchers("/cart").authenticated()
-                .antMatchers("/user/**").authenticated()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/user").authenticated()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
 
                 .and()

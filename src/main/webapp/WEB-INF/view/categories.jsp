@@ -53,7 +53,7 @@
                         <c:set var="user">
                             <security:authentication property="principal.username"/>
                         </c:set>
-                        <a class="navbar-item" href="${pageContext.request.contextPath}/user?username=${user}">
+                        <a class="navbar-item" href="${pageContext.request.contextPath}/user?username=${user}&page=1">
                             Welcome, ${user}
                         </a>
                         <div class="navbar-item">

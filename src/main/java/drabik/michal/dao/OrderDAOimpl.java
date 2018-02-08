@@ -1,6 +1,7 @@
 package drabik.michal.dao;
 
 import drabik.michal.entity.Order;
+import drabik.michal.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -28,6 +29,12 @@ public class OrderDAOimpl implements OrderDAO {
     @Override
     public List<Order> getAllOrders() {
         Query<Order> query = factory.getCurrentSession().createQuery("from Order as o order by o.date desc");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Order> getOrdersForUser(User user) {
+        Query<Order> query =factory.getCurrentSession().createQuery("from Order o join User u on o.user.id=u.id");
         return query.getResultList();
     }
 

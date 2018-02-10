@@ -1,20 +1,27 @@
 package drabik.michal.controller;
 
 import drabik.michal.entity.Order;
+import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.Product;
+import drabik.michal.service.OrderDetailsService;
 import drabik.michal.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 @Controller
 public class HomeController {
 
     @Autowired
-    private OrderService service;
+    private OrderService orderService;
+
+    @Autowired
+    private OrderDetailsService orderDetailsService;
 
     @RequestMapping("/")
     public String home(Model model) {
@@ -23,40 +30,31 @@ public class HomeController {
     }
 
     private void listRecentPurchases(Model model) {
-        List<Order> orders = service.getAllOrders();
-
-        int orderCounter = 1;
-        List<Product> recent = new ArrayList<>();
-
-        for (Order order : orders) {
-            Calendar orderDate = Calendar.getInstance();
-            orderDate.setTime(order.getDate());
-
-            Calendar lastMonth = Calendar.getInstance();
-            int day = lastMonth.get(Calendar.DAY_OF_MONTH);
-            int month = lastMonth.get(Calendar.MONTH);
-            int year = lastMonth.get(Calendar.YEAR);
-
-            if (month == Calendar.JANUARY) {
-                month = Calendar.DECEMBER;
-                year = year - 1;
-            } else {
-                month--;
-            }
-
-            lastMonth.set(year, month, day);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
-            if (orderDate.after(lastMonth)) {
-                recent.add(order.getDetails().get(0).getProduct());
-                orderCounter++;
-            }
-
-            if (orderCounter == 5) {
-                break;
-            }
+        if (month == 1) {
+            month = 12;
+            year--;
+        } else {
+            month--;
         }
-        model.addAttribute("products", recent);
+
+        calendar.set(year, month, day);
+
+        List<Order> orders = orderService.getAllOrdersAfter(calendar.getTime());
+        List<Product> displayed = new LinkedList<>();
+
+        for (int i = 0; i < 5 && i < orders.size(); i++) {
+            List<OrderDetails> details = orderService.getDetailsForOrder(orders.get(i).getId());
+            displayed.add(orderDetailsService.getProductForOrderDetails(details.get(0).getId()));
+        }
+
+        model.addAttribute("products", displayed);
+
     }
 
 }

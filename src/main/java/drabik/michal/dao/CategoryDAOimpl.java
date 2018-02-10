@@ -1,6 +1,7 @@
 package drabik.michal.dao;
 
 import drabik.michal.entity.Category;
+import drabik.michal.entity.Subcategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -28,6 +29,14 @@ public class CategoryDAOimpl implements CategoryDAO {
     @Override
     public List<Category> getAllCategories() {
         Query<Category> query = factory.getCurrentSession().createQuery("from Category");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Subcategory> getSubcategoriesForCategory(int categoryId) {
+        Query<Subcategory> query =
+                factory.getCurrentSession().createQuery("from Subcategory s where s.category.id=:id");
+        query.setParameter("id", categoryId);
         return query.getResultList();
     }
 

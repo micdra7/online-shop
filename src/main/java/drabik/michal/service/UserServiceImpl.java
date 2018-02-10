@@ -1,11 +1,14 @@
 package drabik.michal.service;
 
 import drabik.michal.dao.UserDAO;
+import drabik.michal.entity.Order;
+import drabik.michal.entity.Review;
+import drabik.michal.entity.Role;
 import drabik.michal.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -32,6 +35,24 @@ public class UserServiceImpl implements drabik.michal.service.UserService {
     @Transactional
     public List<User> getAllUsers() {
         return dao.getAllUsers();
+    }
+
+    @Transactional
+    @Override
+    public List<Role> getRolesForUser(long userId) {
+        return dao.getRolesForUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public List<Order> getOrdersForUser(long userId) {
+        return dao.getOrdersForUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public List<Review> getReviewsForUser(long userId) {
+        return dao.getReviewsForUser(userId);
     }
 
     @Transactional

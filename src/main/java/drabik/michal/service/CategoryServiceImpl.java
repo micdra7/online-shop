@@ -2,14 +2,16 @@ package drabik.michal.service;
 
 import drabik.michal.dao.CategoryDAO;
 import drabik.michal.entity.Category;
+import drabik.michal.entity.Subcategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryDAO dao;
@@ -26,10 +28,16 @@ public class CategoryServiceImpl implements CategoryService{
         return dao.getCategory(id);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     @Override
     public List<Category> getAllCategories() {
         return dao.getAllCategories();
+    }
+
+    @Transactional
+    @Override
+    public List<Subcategory> getSubcategoriesForCategory(int categoryId) {
+        return dao.getSubcategoriesForCategory(categoryId);
     }
 
     @Transactional

@@ -2,11 +2,13 @@ package drabik.michal.service;
 
 import drabik.michal.dao.OrderDAO;
 import drabik.michal.entity.Order;
+import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,8 +37,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public List<Order> getOrdersForUser(User user) {
-        return dao.getOrdersForUser(user);
+    public List<Order> getAllOrdersAfter(Date date) {
+        return dao.getAllOrdersAfter(date);
+    }
+
+    @Transactional
+    @Override
+    public List<Order> getOrdersForUser(long userId) {
+        return dao.getOrdersForUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public User getUserForOrder(long orderId) {
+        return dao.getUserForOrder(orderId);
+    }
+
+    @Transactional
+    @Override
+    public List<OrderDetails> getDetailsForOrder(long orderId) {
+        return dao.getDetailsForOrder(orderId);
     }
 
     @Transactional

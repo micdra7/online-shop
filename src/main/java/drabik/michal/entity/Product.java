@@ -1,8 +1,5 @@
 package drabik.michal.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -30,20 +27,16 @@ public class Product implements Serializable {
     @Column(name = "quantity")
     private Long quantity;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "product",
+    @OneToMany(mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
     private List<OrderDetails> details;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "product",
+    @OneToMany(mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
     private List<Review> reviews;
 
     public Product() {}

@@ -1,5 +1,7 @@
 package drabik.michal.dao;
 
+import drabik.michal.entity.Category;
+import drabik.michal.entity.Product;
 import drabik.michal.entity.Subcategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,9 +28,23 @@ public class SubcategoryDAOimpl implements SubcategoryDAO {
     }
 
     @Override
-    public List<Subcategory> getAllCategories() {
+    public List<Subcategory> getAllSubcategories() {
         Query<Subcategory> query = factory.getCurrentSession().createQuery("from Subcategory");
         return query.getResultList();
+    }
+
+    @Override
+    public List<Product> getProductsForSubcategory(int subcategoryId) {
+        Query<Product> query = factory.getCurrentSession().createQuery("from Product p where p.subcategory.id=:id");
+        query.setParameter("id", subcategoryId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Category getCategoryForSubcategory(int subcategoryId) {
+        Session session = factory.getCurrentSession();
+        Subcategory subcategory = session.get(Subcategory.class, subcategoryId);
+        return subcategory.getCategory();
     }
 
     @Override

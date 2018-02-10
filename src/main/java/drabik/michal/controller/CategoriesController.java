@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,12 +39,15 @@ public class CategoriesController {
 
     private void listAllCategories(Model model) {
         List<Category> categories = categoryService.getAllCategories();
+        for (Category category : categories) {
+            category.setSubcategories(categoryService.getSubcategoriesForCategory(category.getId()));
+        }
         model.addAttribute("categories", categories);
     }
 
     private void listProductsFromSubcategory(Integer id, Integer page, Model model) {
         Subcategory subcategory = subcategoryService.getSubcategory(id);
-        List<Product> products = subcategory.getProducts();
+        List<Product> products = subcategoryService.getProductsForSubcategory(id);
 
         if (products.size() > 25) {
             List<Product> displayed = new LinkedList<>();

@@ -163,13 +163,13 @@
                                         </p>
                                     </div>
                                     <div class="field">
-                                        <p class="control">
-                                            <div class="level">
-                                                <div class="level-item">
+                                        <div class="level">
+                                            <div class="level-item">
+                                                <p class="control">
                                                     <input type="submit" class="button is-info" value="Update">
-                                                </div>
+                                                </p>
                                             </div>
-                                        </p>
+                                        </div>
                                     </div>
                                 </form:form>
                             </c:if>
@@ -178,21 +178,15 @@
                                     <div class="level">
                                         <div class="level-left">
                                             <div class="level-item">
-                                                <p>${item.id}</p>
+                                                <p>Order id: ${item.key.id}</p>
                                             </div>
                                         </div>
                                         <div class="level-item">
-                                            <c:forEach var="subitem" items="${item.details}">
-                                                <p>
-                                                    <a class="link" href="${pageContext.request.contextPath}/product?id=${subitem.product.id}">
-                                                        ${subitem.product.producer} ${subitem.product.name}
-                                                    </a>
-                                                </p>
-                                            </c:forEach>
+                                            <p>Order value: ${item.value}</p>
                                         </div>
                                         <div class="level-right">
                                             <div class="level-item">
-                                                ${item.date}
+                                                ${item.key.date}
                                             </div>
                                         </div>
                                     </div>

@@ -1,8 +1,5 @@
 package drabik.michal.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -26,24 +23,18 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetails details;
 
-    @ManyToMany(fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    @Fetch(value = FetchMode.SUBSELECT)
     private List<Role> roles;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "user",
+    @OneToMany(mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
     private List<Order> orders;
 
-    @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "user",
+    @OneToMany(mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
     private List<Review> reviews;
 
     public User() {}

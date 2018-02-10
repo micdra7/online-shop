@@ -32,7 +32,7 @@ public class ProductController {
         model.addAttribute("product", product);
         model.addAttribute("subcategory", product.getSubcategory());
 
-        List<Review> reviews = product.getReviews();
+        List<Review> reviews = productService.getReviewsForProduct(id);
         Collections.sort(reviews, (review, review1) -> {
             if (review.getDate().after(review1.getDate())) {
                 return 1;

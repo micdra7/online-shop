@@ -1,10 +1,8 @@
 package drabik.michal.controller;
 
-import drabik.michal.entity.Order;
-import drabik.michal.entity.Role;
-import drabik.michal.entity.User;
-import drabik.michal.entity.UserDetails;
+import drabik.michal.entity.*;
 import drabik.michal.service.OrderService;
+import drabik.michal.service.UserDetailsService;
 import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -27,6 +27,8 @@ public class UserController {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/user")
@@ -35,6 +37,18 @@ public class UserController {
                        Model model) {
         displayUserPage(username, page, model);
         return "user";
+    }
+
+    @RequestMapping("/user-update")
+    public String userUpdate(@ModelAttribute("userDetails") UserDetails details,
+                             Model model) {
+
+        userDetailsService.updateUserDetails(details);
+        String username = userService.getUser(details.getUserId()).getUsername();
+
+        model.addAttribute("userDetails", details);
+        model.addAttribute("orders", new LinkedList<Order>());
+        return "redirect:/user?username=" + username + "&page=1";
     }
 
     @RequestMapping("/log-in")
@@ -94,11 +108,22 @@ public class UserController {
         User user = userService.getUser(username);
 
         if (page == 1) {
-            model.addAttribute("userDetails", user.getDetails());
+            model.addAttribute("userDetails", userDetailsService.getUserDetails(user.getId()));
             model.addAttribute("orders", new LinkedList<Order>());
         } else if (page == 2) {
+            List<Order> orders = orderService.getOrdersForUser(user.getId());
+            LinkedHashMap<Order, Double> displayed = new LinkedHashMap<>();
+            for (Order order : orders) {
+                order.setDetails(orderService.getDetailsForOrder(order.getId()));
+                double orderValue = 0d;
+                for (OrderDetails details : order.getDetails()) {
+                    orderValue += details.getValue();
+                }
+                displayed.put(order, orderValue);
+            }
+
             model.addAttribute("userDetails", new UserDetails());
-            model.addAttribute("orders", orderService.getOrdersForUser(user));
+            model.addAttribute("orders", displayed);
         } else {
             model.addAttribute("userDetails", new UserDetails());
             model.addAttribute("orders", new LinkedList<Order>());

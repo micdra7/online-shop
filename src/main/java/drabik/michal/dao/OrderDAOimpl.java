@@ -1,6 +1,7 @@
 package drabik.michal.dao;
 
 import drabik.michal.entity.Order;
+import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -8,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,14 +30,34 @@ public class OrderDAOimpl implements OrderDAO {
 
     @Override
     public List<Order> getAllOrders() {
-        Query<Order> query = factory.getCurrentSession().createQuery("from Order as o order by o.date desc");
+        Query<Order> query = factory.getCurrentSession().createQuery("from Order o order by o.date desc");
         return query.getResultList();
     }
 
     @Override
-    public List<Order> getOrdersForUser(User user) {
+    public List<Order> getAllOrdersAfter(Date date) {
+        Query<Order> query = factory.getCurrentSession().createQuery("from Order o where o.date > :date");
+        query.setParameter("date", date);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Order> getOrdersForUser(long userId) {
         Query<Order> query =factory.getCurrentSession().createQuery("from Order o where o.user.id=:id");
-        query.setParameter("id", user.getId());
+        query.setParameter("id", userId);
+        return query.getResultList();
+    }
+
+    @Override
+    public User getUserForOrder(long orderId) {
+        return factory.getCurrentSession().get(Order.class, orderId).getUser();
+    }
+
+    @Override
+    public List<OrderDetails> getDetailsForOrder(long orderId) {
+        Query<OrderDetails> query =
+                factory.getCurrentSession().createQuery("from OrderDetails od where od.order.id=:id");
+        query.setParameter("id", orderId);
         return query.getResultList();
     }
 

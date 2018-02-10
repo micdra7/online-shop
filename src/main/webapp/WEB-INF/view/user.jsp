@@ -88,14 +88,14 @@
                             </a>
                         </div>
                     </div>
-                    <div class="column">
-                        <div class="box container">
+                    <div class="column is-four-fifths">
+                        <div class="box">
                             <c:if test="${param.page == 1}">
                                 <form:form action="${pageContext.request.contextPath}/user-update" method="post" modelAttribute="userDetails">
                                     <div class="field">
                                         <h1 class="title">Review &amp; edit your data</h1>
                                     </div>
-                                    <form:hidden path="user_id"/>
+                                    <form:hidden path="userId"/>
                                     <div class="field">
                                         <label class="label">Name</label>
                                         <p class="control">
@@ -164,7 +164,11 @@
                                     </div>
                                     <div class="field">
                                         <p class="control">
-                                            <input type="submit" class="button is-info">
+                                            <div class="level">
+                                                <div class="level-item">
+                                                    <input type="submit" class="button is-info" value="Update">
+                                                </div>
+                                            </div>
                                         </p>
                                     </div>
                                 </form:form>
@@ -174,7 +178,7 @@
                                     <div class="level">
                                         <div class="level-left">
                                             <div class="level-item">
-                                                ${item.id}
+                                                <p>${item.id}</p>
                                             </div>
                                         </div>
                                         <div class="level-item">

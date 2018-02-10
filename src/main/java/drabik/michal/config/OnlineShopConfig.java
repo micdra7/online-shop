@@ -65,7 +65,7 @@ public class OnlineShopConfig extends WebMvcConfigurerAdapter{
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(20);
     }
 
     @Bean

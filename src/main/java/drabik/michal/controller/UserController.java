@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @RequestMapping("/user")
+    @GetMapping("/user")
     public String user(@RequestParam("username") String username,
                        @RequestParam("page") Integer page,
                        Model model) {
@@ -93,12 +94,6 @@ public class UserController {
         User user = userService.getUser(username);
 
         if (page == 1) {
-            if (user == null) {
-                System.err.println("\n\nUSER IS NULL\n\n");
-            }
-            if (user.getDetails() == null) {
-                System.err.println("\n\nUSERDETAILS ARE NULL\n\n");
-            }
             model.addAttribute("userDetails", user.getDetails());
             model.addAttribute("orders", new LinkedList<Order>());
         } else if (page == 2) {

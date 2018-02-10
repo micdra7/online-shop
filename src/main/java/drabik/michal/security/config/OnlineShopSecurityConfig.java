@@ -29,15 +29,16 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/categories/**").permitAll()
+                .antMatchers("/register-form").anonymous()
                 .antMatchers("/register").anonymous()
                 .antMatchers("/log-in").anonymous()
-                .antMatchers("/subcategories").permitAll()
-                .antMatchers("/product").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/cart").authenticated()
                 .antMatchers("/user").authenticated()
-                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
+                .antMatchers("/categories").permitAll()
+                .antMatchers("/subcategories").permitAll()
+                .antMatchers("/product").permitAll()
 
                 .and()
                 .formLogin()

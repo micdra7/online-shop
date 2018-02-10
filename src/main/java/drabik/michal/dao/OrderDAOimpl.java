@@ -34,7 +34,8 @@ public class OrderDAOimpl implements OrderDAO {
 
     @Override
     public List<Order> getOrdersForUser(User user) {
-        Query<Order> query =factory.getCurrentSession().createQuery("from Order o join User u on o.user.id=u.id");
+        Query<Order> query =factory.getCurrentSession().createQuery("from Order o where o.user.id=:id");
+        query.setParameter("id", user.getId());
         return query.getResultList();
     }
 

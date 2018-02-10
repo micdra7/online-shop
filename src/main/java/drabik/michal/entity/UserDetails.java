@@ -9,7 +9,7 @@ public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private Long id;
+    private Long userId;
 
     @Column(name = "name")
     private String name;
@@ -42,12 +42,12 @@ public class UserDetails {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {

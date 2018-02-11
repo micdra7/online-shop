@@ -22,8 +22,16 @@ public class UserDetailsDAOimpl implements UserDetailsDAO {
     }
 
     @Override
-    public UserDetails getUserDetails(long id) {
-        return factory.getCurrentSession().get(UserDetails.class, id);
+    public UserDetails getUserDetailsForUser(long id) {
+        Query<UserDetails> query = factory.getCurrentSession().createQuery("from UserDetails ud where ud.user.id=:id");
+        query.setParameter("id", id);
+        UserDetails details;
+        try {
+            details = query.getSingleResult();
+        } catch (Exception e) {
+            details = new UserDetails();
+        }
+        return details;
     }
 
     @Override
@@ -33,9 +41,9 @@ public class UserDetailsDAOimpl implements UserDetailsDAO {
     }
 
     @Override
-    public User getUserForUserDetails(long userDetailsId) {
+    public User getUserForUserDetails(long id) {
         Query<User> query = factory.getCurrentSession().createQuery("from User u where u.id=:id");
-        query.setParameter("id", userDetailsId);
+        query.setParameter("id", id);
         return query.getSingleResult();
     }
 
@@ -48,6 +56,6 @@ public class UserDetailsDAOimpl implements UserDetailsDAO {
 
     @Override
     public void updateUserDetails(UserDetails details) {
-        factory.getCurrentSession().delete(details);
+        factory.getCurrentSession().update(details);
     }
 }

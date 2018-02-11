@@ -18,10 +18,6 @@ public class UserDAOimpl implements UserDAO {
     @Autowired
     private SessionFactory factory;
 
-    public UserDAOimpl() {
-        System.out.println("dao impl created");
-    }
-
     public void addUser(User user) {
         factory.getCurrentSession().save(user);
     }

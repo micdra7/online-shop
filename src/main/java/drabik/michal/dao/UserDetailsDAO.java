@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface UserDetailsDAO {
     void addUserDetails(UserDetails details);
-    UserDetails getUserDetails(long id);
+    UserDetails getUserDetailsForUser(long id);
     List<UserDetails> getAllUserDetails();
-    User getUserForUserDetails(long userDetailsId);
+    User getUserForUserDetails(long id);
     void deleteUserDetails(long id);
     void updateUserDetails(UserDetails details);
 }

@@ -23,16 +23,14 @@
                 <a class="navbar-item" href="${pageContext.request.contextPath}/">
                     <img src="${pageContext.request.contextPath}/resources/images/logo/laptop.svg" alt="Logo" width="64" height="64">
                 </a>
-                <security:authorize access="isAuthenticated()">
-                    <div class="navbar-item">
+                <div class="navbar-item">
+                    <a href="${pageContext.request.contextPath}/cart">
                         <span class="button is-info is-inverted">
-                            <a href="${pageContext.request.contextPath}/cart">
                                 <i class="fas fa-shopping-cart"></i>
-                            </a>
-                            0.00&euro;
+                            ${sessionScope.cart.totalPrice}&euro;
                         </span>
-                    </div>
-                </security:authorize>
+                    </a>
+                </div>
                 <span class="navbar-burger burger" id="burger" onClick="setMenuVisibility();">
                     <span></span>
                     <span></span>
@@ -89,8 +87,11 @@
                                 </h4>
                                 <p>${item.description}</p>
                             </div>
-                            <div class="media-right">
+                            <div class="media-right has-text-centered">
                                 <p>${item.price}&euro;</p>
+                                <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                    Add to cart
+                                </a>
                             </div>
                         </div>
                     </div>

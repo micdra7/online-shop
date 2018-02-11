@@ -2,6 +2,7 @@ package drabik.michal.controller;
 
 import drabik.michal.entity.*;
 import drabik.michal.service.OrderService;
+import drabik.michal.service.RoleService;
 import drabik.michal.service.UserDetailsService;
 import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
@@ -29,6 +30,8 @@ public class UserController {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/user")
@@ -43,8 +46,11 @@ public class UserController {
     public String userUpdate(@ModelAttribute("userDetails") UserDetails details,
                              Model model) {
 
+        ArrayList<Role> roles = new ArrayList<>();
+        roles.add(roleService.getRole(1));
+        details.getUser().setRoles(roles);
         userDetailsService.updateUserDetails(details);
-        String username = userService.getUser(details.getUserId()).getUsername();
+        String username = details.getUser().getUsername();
 
         model.addAttribute("userDetails", details);
         model.addAttribute("orders", new LinkedList<Order>());
@@ -100,7 +106,7 @@ public class UserController {
             toAdd.setRoles(roles);
             userService.addUser(toAdd);
             model.addAttribute("user", new User(user.getUsername(), ""));
-            return "redirect:/logout";
+            return "redirect:/log-in";
         }
     }
 
@@ -108,7 +114,7 @@ public class UserController {
         User user = userService.getUser(username);
 
         if (page == 1) {
-            model.addAttribute("userDetails", userDetailsService.getUserDetails(user.getId()));
+            model.addAttribute("userDetails", userDetailsService.getUserDetailsForUser(user.getId()));
             model.addAttribute("orders", new LinkedList<Order>());
         } else if (page == 2) {
             List<Order> orders = orderService.getOrdersForUser(user.getId());

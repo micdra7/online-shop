@@ -23,16 +23,14 @@
                 <a class="navbar-item" href="${pageContext.request.contextPath}/">
                     <img src="${pageContext.request.contextPath}/resources/images/logo/laptop.svg" alt="Logo" width="64" height="64">
                 </a>
-                <security:authorize access="isAuthenticated()">
-                    <div class="navbar-item">
+                <div class="navbar-item">
+                    <a href="${pageContext.request.contextPath}/cart">
                         <span class="button is-info is-inverted">
-                            <a href="${pageContext.request.contextPath}/cart">
                                 <i class="fas fa-shopping-cart"></i>
-                            </a>
-                            0.00&euro;
+                            ${sessionScope.cart.totalPrice}&euro;
                         </span>
-                    </div>
-                </security:authorize>
+                    </a>
+                </div>
                 <span class="navbar-burger burger" id="burger" onClick="setMenuVisibility();">
                     <span></span>
                     <span></span>
@@ -95,7 +93,11 @@
                                     <div class="field">
                                         <h1 class="title">Review &amp; edit your data</h1>
                                     </div>
-                                    <form:hidden path="userId"/>
+                                    <form:hidden path="id"/>
+                                    <form:hidden path="user.id"/>
+                                    <form:hidden path="user.username"/>
+                                    <form:hidden path="user.password"/>
+                                    <form:hidden path="user.enabled"/>
                                     <div class="field">
                                         <label class="label">Name</label>
                                         <p class="control">

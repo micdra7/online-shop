@@ -1,5 +1,6 @@
 package drabik.michal.controller;
 
+import drabik.michal.cart.data.Cart;
 import drabik.michal.entity.Order;
 import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.Product;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,8 +26,11 @@ public class HomeController {
     private OrderDetailsService orderDetailsService;
 
     @RequestMapping("/")
-    public String home(Model model) {
+    public String home(Model model, HttpSession session) {
         listRecentPurchases(model);
+        if (session.getAttribute("cart") == null) {
+            session.setAttribute("cart", new Cart());
+        }
         return "home";
     }
 

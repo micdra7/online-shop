@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserDetailsService {
     void addUserDetails(UserDetails details);
-    UserDetails getUserDetails(long id);
+    UserDetails getUserDetailsForUser(long id);
     List<UserDetails> getAllUserDetails();
     User getUserForUserDetails(long userDetailsId);
     void deleteUserDetails(long id);

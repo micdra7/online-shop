@@ -22,8 +22,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     @Override
-    public UserDetails getUserDetails(long id) {
-        return dao.getUserDetails(id);
+    public UserDetails getUserDetailsForUser(long id) {
+        return dao.getUserDetailsForUser(id);
     }
 
     @Transactional

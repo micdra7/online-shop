@@ -10,3 +10,19 @@ function setMenuVisibility() {
         menu.classList.add("is-active");
     }
 }
+
+function updateQuantity(pageContext, index) {
+    var id = document.getElementById("id" + index).value;
+    var selectedQuantity = document.getElementById("selectedQuantity" + index).value;
+    
+    window.location.replace(pageContext + "/update-cart?id=" + id + "&selectedQuantity=" + selectedQuantity);
+}
+
+function deleteFromCart(pageContext, index) {
+    var id = document.getElementById("id" + index).value;
+    window.location.replace(pageContext + "/delete-from-cart?id=" + id);
+}
+
+function proceedWithPayment(pageContext) {
+    window.location.replace(pageContext + "/pay");
+}

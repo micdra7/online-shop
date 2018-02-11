@@ -100,10 +100,10 @@ public class UserController {
         } else {
             User toAdd = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
             ArrayList<Role> roles = new ArrayList<>();
-            roles.add(new Role("CUSTOMER"));
+            roles.add(roleService.getRole(1));
             toAdd.setEnabled(1);
             toAdd.setDetails(details);
-            toAdd.setRoles(roles);
+            details.setUser(toAdd);
             userService.addUser(toAdd);
             model.addAttribute("user", new User(user.getUsername(), ""));
             return "redirect:/log-in";

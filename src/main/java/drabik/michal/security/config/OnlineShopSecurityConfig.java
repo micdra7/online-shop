@@ -37,7 +37,6 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register-form").anonymous()
                 .antMatchers("/register").anonymous()
                 .antMatchers("/log-in").anonymous()
-                .antMatchers("/cart").anonymous()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").authenticated()
                 .antMatchers("/pay").authenticated()
@@ -45,6 +44,7 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/categories").permitAll()
                 .antMatchers("/subcategories").permitAll()
                 .antMatchers("/product").permitAll()
+                .antMatchers("/cart").permitAll()
 
                 .and()
                 .formLogin()

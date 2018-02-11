@@ -25,7 +25,7 @@ public class Product implements Serializable {
     private Double price;
 
     @Column(name = "quantity")
-    private Long quantity;
+    private Integer quantity;
 
     @OneToMany(mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -41,7 +41,7 @@ public class Product implements Serializable {
 
     public Product() {}
 
-    public Product(String producer, String name, String description, double price, long quantity) {
+    public Product(String producer, String name, String description, double price, int quantity) {
         this.producer = producer;
         this.name = name;
         this.description = description;
@@ -89,11 +89,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

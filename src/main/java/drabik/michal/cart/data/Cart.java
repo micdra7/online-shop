@@ -3,60 +3,82 @@ package drabik.michal.cart.data;
 import drabik.michal.entity.Product;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Cart {
-    private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Integer> quantity = new ArrayList<>();
+    private List<ProductData> products = Collections.synchronizedList(new ArrayList<ProductData>());
     private double totalPrice = 0;
 
-    public void addToCart(Product product) {
-        if (!products.contains(product)) {
-            products.add(product);
-            quantity.add(1);
-            totalPrice += product.getPrice();
-        }
-    }
-
-    public void removeFromCart(Product product) {
-        if (products.contains(product)) {
-            quantity.remove(products.indexOf(product));
-            products.remove(product);
-        }
-    }
-
-    public void updateProductQuantity(Product product, int q) {
-        if (products.contains(product)) {
-            if (q < 0) {
-                q = 1;
-            } else if (q == 0) {
-                removeFromCart(product);
+    public void addToCart(ProductData product) {
+        synchronized (products) {
+            boolean contains = false;
+            for (ProductData data : products) {
+                if (data.getId().equals(product.getId())) {
+                    contains = true;
+                }
             }
-            quantity.set(products.indexOf(product), q);
+
+            if (!contains) {
+                product.setSelectedQuantity(1);
+                products.add(product);
+                updateTotalPrice();
+            }
         }
     }
 
-    public boolean contains(Product product) {
-        return products.contains(product);
+    public void removeFromCart(ProductData product) {
+        int index = -1;
+        synchronized (products) {
+            for (ProductData data : products) {
+                if (data.getId().equals(product.getId())) {
+                    index = products.indexOf(data);
+                }
+            }
+        }
+        if (index != -1) {
+            products.remove(index);
+        }
+        updateTotalPrice();
     }
 
-    public int getQuantity(Product product) {
-        return quantity.get(products.indexOf(product));
+    public void updateProductQuantity(long id, int q) {
+        synchronized (products) {
+            for (ProductData data : products) {
+                if (data.getId().equals(id)) {
+                    data.setSelectedQuantity(q);
+                }
+            }
+        }
+        updateTotalPrice();
     }
 
-    public ArrayList<Product> getProducts() {
+    public boolean contains(ProductData product) {
+        synchronized (product) {
+            for (Product p : products) {
+                if (p.getName().equals(product.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void updateTotalPrice() {
+        this.totalPrice = 0d;
+        synchronized (products) {
+            for (ProductData productData : products) {
+                this.totalPrice += productData.getPrice()*productData.getSelectedQuantity();
+            }
+        }
+    }
+
+    public List<ProductData> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(List<ProductData> products) {
         this.products = products;
-    }
-
-    public ArrayList<Integer> getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(ArrayList<Integer> quantity) {
-        this.quantity = quantity;
     }
 
     public double getTotalPrice() {

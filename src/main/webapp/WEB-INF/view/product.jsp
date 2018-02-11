@@ -98,7 +98,7 @@
                             <div class="column has-text-centered">
                                 <p>Price: ${product.price}&euro;</p>
                                 <p>Quantity: ${product.quantity}</p>
-                                <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${product.id}">
                                     Add to cart
                                 </a>
                             </div>

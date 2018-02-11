@@ -75,7 +75,7 @@
         </nav>
         <section class="section">
             <div class="box container">
-                <form:form action="${pageContext.request.contextPath}/update-cart" method="post" modelAttribute="cart">
+                <form:form action="${pageContext.request.contextPath}/pay" method="post" modelAttribute="cart.products">
                     <c:forEach var="item" items="${cart.products}" varStatus="loop">
                         <div class="columns">
                             <div class="column is-four-fifths">
@@ -84,7 +84,24 @@
                                 </a>
                             </div>
                             <div class="column">
-                                <form:input path="${cart.quantity.get(loop.index)}" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                                <div class="field">
+                                    <p>
+                                        <a class="delete" 
+                                                onClick="deleteFromCart('${pageContext.request.contextPath}', '${loop.index}')">
+                                        </a>
+                                    </p>
+                                    <form action="${pageContext.request.contextPath}/update-cart" method="post" id="quantity">
+                                        <p class="control">
+                                            <input type="hidden" value="${item.id}" id="id${loop.index}"/>
+                                            <input type="number" class="input" value="${item.selectedQuantity}" id="selectedQuantity${loop.index}"/>
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-info" onClick="updateQuantity('${pageContext.request.contextPath}', ${loop.index});">
+                                                Update quantity
+                                            </a>
+                                        </p>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </c:forEach>
@@ -95,12 +112,7 @@
                     </div>
                     <div class="level">
                         <div class="level-item">
-                            <a class="button is-info" href="${pageContext.request.contextPath}/update-cart">
-                                Update quantity
-                            </a>
-                        </div>
-                        <div class="level-item">
-                            <a class="button is-info" href="${pageContext.request.contextPath}/pay">
+                            <a class="button is-info" onClick="proceedWithPayment('${pageContext.request.contextPath}');">
                                 Proceed to payment
                             </a>
                         </div>

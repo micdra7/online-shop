@@ -113,6 +113,7 @@ public class UserController {
             toAdd.setEnabled(1);
             toAdd.setDetails(details);
             details.setUser(toAdd);
+            toAdd.setRoles(roles);
             userService.addUser(toAdd);
             model.addAttribute("user", new User(user.getUsername(), ""));
             return "redirect:/log-in";

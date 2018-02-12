@@ -29,6 +29,15 @@ public class ProductDAOimpl implements ProductDAO {
     }
 
     @Override
+    public Product getProduct(String producer, String name) {
+        Query<Product> query =
+                factory.getCurrentSession().createQuery("from Product p where p.producer=:producer and p.name=:name");
+        query.setParameter("producer", producer);
+        query.setParameter("name", name);
+        return query.getSingleResult();
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         Query<Product> query = factory.getCurrentSession().createQuery("from Product");
         return query.getResultList();

@@ -2,21 +2,32 @@ package drabik.michal.controller;
 
 import drabik.michal.cart.data.Cart;
 import drabik.michal.cart.data.ProductData;
+import drabik.michal.entity.Order;
+import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.Product;
+import drabik.michal.service.OrderService;
 import drabik.michal.service.ProductService;
+import drabik.michal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 @Controller
 public class CartController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session) {
@@ -84,5 +95,51 @@ public class CartController {
         model.addAttribute("cart", cart);
 
         return "redirect:/cart";
+    }
+
+    @RequestMapping("/pay")
+    public String pay(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
+
+        Cart cart = (Cart) session.getAttribute("cart");
+
+        model.addAttribute("products", cart.getProducts());
+        model.addAttribute("price", cart.getTotalPrice());
+
+        return "pay";
+    }
+
+    @RequestMapping("/order-confirmation")
+    public String orderConfirmation(Model model, HttpSession session) throws Exception {
+        Cart.createInstanceIfNotExisting(session);
+
+        Cart cart = (Cart)session.getAttribute("cart");
+        Order order = new Order(Calendar.getInstance().getTime());
+        org.springframework.security.core.userdetails.User user =
+                (org.springframework.security.core.userdetails.User)SecurityContextHolder
+                        .getContext().getAuthentication().getPrincipal();
+
+        if (user != null) {
+            order.setUser(userService.getUser(user.getUsername()));
+            order.setDetails(new ArrayList<>());
+
+            for (ProductData data : cart.getProducts()) {
+                double price = data.getPrice();
+                int quantity = data.getSelectedQuantity();
+                OrderDetails details = new OrderDetails(price, quantity, price*quantity);
+                details.setOrder(order);
+                Product product = productService.getProduct(data.getProducer(), data.getName());
+                product.setQuantity(product.getQuantity() - data.getSelectedQuantity());
+                details.setProduct(product);
+                order.getDetails().add(details);
+                productService.updateProduct(product);
+            }
+            orderService.addOrder(order);
+
+        }
+
+        session.removeAttribute("cart");
+
+        return "redirect:/";
     }
 }

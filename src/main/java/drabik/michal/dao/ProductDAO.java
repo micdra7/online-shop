@@ -10,6 +10,7 @@ import java.util.List;
 public interface ProductDAO {
     void addProduct(Product product);
     Product getProduct(long id);
+    Product getProduct(String producer, String name);
     List<Product> getAllProducts();
     List<OrderDetails> getOrderDetailsForProduct(long productId);
     Subcategory getSubcategoryForProduct(long productId);

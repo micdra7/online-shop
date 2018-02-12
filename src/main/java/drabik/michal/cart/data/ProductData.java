@@ -19,6 +19,11 @@ public class ProductData extends Product {
         this.selectedQuantity = 0;
     }
 
+    public static Product getProductInstance(ProductData data) {
+        return new Product(data.getProducer(), data.getName(),
+                data.getDescription(), data.getPrice(), data.getQuantity());
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package drabik.michal.controller;
 
+import drabik.michal.cart.data.Cart;
 import drabik.michal.entity.Product;
 import drabik.michal.entity.Review;
 import drabik.michal.service.ProductService;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +23,10 @@ public class ProductController {
 
 
     @RequestMapping("/product")
-    public String product(@RequestParam("id") Long id, Model model) {
+    public String product(@RequestParam("id") Long id,
+                          Model model,
+                          HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         listProductParameters(id, model);
         return "product";
     }

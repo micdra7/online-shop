@@ -1,5 +1,6 @@
 package drabik.michal.controller;
 
+import drabik.michal.cart.data.Cart;
 import drabik.michal.entity.Category;
 import drabik.michal.entity.Product;
 import drabik.michal.entity.Subcategory;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +26,8 @@ public class CategoriesController {
     SubcategoryService subcategoryService;
 
     @RequestMapping("/categories")
-    public String categories(Model model) {
+    public String categories(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         listAllCategories(model);
         return "categories";
     }
@@ -32,7 +35,9 @@ public class CategoriesController {
     @RequestMapping("/subcategories")
     public String subcategories(@RequestParam Integer id,
                                 @RequestParam Integer page,
-                                Model model) {
+                                Model model,
+                                HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         listProductsFromSubcategory(id, page, model);
         return "subcategories";
     }

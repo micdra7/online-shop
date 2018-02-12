@@ -10,8 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
@@ -49,18 +47,6 @@ public class OnlineShopConfig extends WebMvcConfigurerAdapter{
         source.setUsername(environment.getProperty("db.username"));
         source.setPassword(environment.getProperty("db.password"));
         return source;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        JdbcDaoImpl jdbcDao = new JdbcDaoImpl();
-        jdbcDao.setDataSource(dataSource());
-        jdbcDao.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?");
-        jdbcDao.setAuthoritiesByUsernameQuery("SELECT users.username, roles.name FROM" +
-                " users INNER JOIN user_roles ON users.id=user_roles.user_id " +
-                "INNER JOIN roles ON user_roles.role_id=roles.id " +
-                "WHERE users.username=?");
-        return jdbcDao;
     }
 
     @Bean

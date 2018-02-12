@@ -20,6 +20,7 @@ public class CartController {
 
     @RequestMapping("/cart")
     public String cart(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         model.addAttribute("cart", session.getAttribute("cart"));
         return "cart";
     }
@@ -28,6 +29,8 @@ public class CartController {
     public String addToCart(@RequestParam("id") Long productId,
                             Model model,
                             HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
+
         Cart cart = (Cart) session.getAttribute("cart");
         Product product = productService.getProduct(productId);
         ProductData productData = new ProductData(product);
@@ -48,6 +51,8 @@ public class CartController {
                              Model model,
                              HttpSession session){
 
+        Cart.createInstanceIfNotExisting(session);
+
         Cart c = (Cart) session.getAttribute("cart");
         for (ProductData product : c.getProducts()) {
             if (product.getId().equals(productId)) {
@@ -67,6 +72,9 @@ public class CartController {
     public String deleteFromCart(@RequestParam("id") Long productId,
                                  Model model,
                                  HttpSession session) {
+
+        Cart.createInstanceIfNotExisting(session);
+
         Cart cart = (Cart) session.getAttribute("cart");
         Product product = productService.getProduct(productId);
         ProductData data = new ProductData(product);

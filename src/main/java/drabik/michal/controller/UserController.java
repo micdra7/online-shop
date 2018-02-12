@@ -1,5 +1,6 @@
 package drabik.michal.controller;
 
+import drabik.michal.cart.data.Cart;
 import drabik.michal.entity.*;
 import drabik.michal.service.OrderService;
 import drabik.michal.service.RoleService;
@@ -7,7 +8,7 @@ import drabik.michal.service.UserDetailsService;
 import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -31,20 +33,23 @@ public class UserController {
     private UserDetailsService userDetailsService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/user")
     public String user(@RequestParam("username") String username,
                        @RequestParam("page") Integer page,
-                       Model model) {
+                       Model model,
+                       HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         displayUserPage(username, page, model);
         return "user";
     }
 
     @RequestMapping("/user-update")
     public String userUpdate(@ModelAttribute("userDetails") UserDetails details,
-                             Model model) {
+                             Model model,
+                             HttpSession session) {
+
+        Cart.createInstanceIfNotExisting(session);
 
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(roleService.getRole(1));
@@ -58,18 +63,20 @@ public class UserController {
     }
 
     @RequestMapping("/log-in")
-    public String logIn(Model model) {
+    public String logIn(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         model.addAttribute("user", new User());
         return "log-in";
     }
 
     @RequestMapping("/logout")
-    public String logout(Model model) {
-        return logIn(model);
+    public String logout(Model model, HttpSession session) {
+        return logIn(model, session);
     }
 
     @RequestMapping("/register-form")
-    public String registerForm(Model model) {
+    public String registerForm(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         model.addAttribute("user", new User());
         model.addAttribute("userDetails", new UserDetails());
         model.addAttribute("error", new UserDataError());
@@ -79,7 +86,9 @@ public class UserController {
     @RequestMapping("/register")
     public String register(@ModelAttribute("user") User user,
                            @ModelAttribute("userDetails") UserDetails details,
-                           Model model) {
+                           Model model,
+                           HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         return processRegistration(user, details, model);
     }
 
@@ -98,7 +107,7 @@ public class UserController {
             model.addAttribute("error", error);
             return "register";
         } else {
-            User toAdd = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
+            User toAdd = new User(user.getUsername(), BCrypt.hashpw(user.getPassword(),  BCrypt.gensalt()));
             ArrayList<Role> roles = new ArrayList<>();
             roles.add(roleService.getRole(1));
             toAdd.setEnabled(1);

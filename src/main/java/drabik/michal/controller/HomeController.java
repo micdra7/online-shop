@@ -27,10 +27,8 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Model model, HttpSession session) {
+        Cart.createInstanceIfNotExisting(session);
         listRecentPurchases(model);
-        if (session.getAttribute("cart") == null) {
-            session.setAttribute("cart", new Cart());
-        }
         return "home";
     }
 

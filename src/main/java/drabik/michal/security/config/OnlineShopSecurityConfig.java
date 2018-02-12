@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -14,9 +13,6 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -27,8 +23,13 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?")
+                .authoritiesByUsernameQuery("SELECT users.username, roles.name FROM" +
+                        " users INNER JOIN user_roles ON users.id=user_roles.user_id " +
+                        "INNER JOIN roles ON user_roles.role_id=roles.id " +
+                        "WHERE users.username=?");
     }
 
     @Override

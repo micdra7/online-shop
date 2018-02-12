@@ -2,6 +2,7 @@ package drabik.michal.cart.data;
 
 import drabik.michal.entity.Product;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,12 @@ import java.util.List;
 public class Cart {
     private List<ProductData> products = Collections.synchronizedList(new ArrayList<ProductData>());
     private double totalPrice = 0;
+
+    public static void createInstanceIfNotExisting(HttpSession session) {
+        if (session.getAttribute("cart") == null) {
+            session.setAttribute("cart", new Cart());
+        }
+    }
 
     public void addToCart(ProductData product) {
         synchronized (products) {

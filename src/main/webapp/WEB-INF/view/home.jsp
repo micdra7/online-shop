@@ -75,6 +75,11 @@
         </nav>
         <section class="section">
             <div class="box container">
+                <c:if test="${param.success != null}">
+                    <div class="notification is-success">
+                        <p>${param.success}</p>
+                    </div>
+                </c:if>
                 <h1 class="title">Recently purchased</h1>
                 <c:forEach var="item" items="${products}">
                     <div class="notification is-info">
@@ -89,9 +94,18 @@
                             </div>
                             <div class="media-right has-text-centered">
                                 <p>${item.price}&euro;</p>
-                                <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
-                                    Add to cart
-                                </a>
+                                <c:choose>
+                                    <c:when test="${item.quantity > 0}">
+                                        <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                            Add to cart
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="button is-info is-inverted" disabled>
+                                            Out of stock
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

@@ -78,13 +78,11 @@
                 <form:form action="${pageContext.request.contextPath}/pay" method="post" modelAttribute="cart.products">
                     <c:forEach var="item" items="${cart.products}" varStatus="loop">
                         <div class="columns">
-                            <div class="column is-three-fifths">
+                            <div class="column is-four-fifths">
                                 <a href="${pageContext.request.contextPath}/product?id=${item.id}" class="link">
                                     ${item.producer} ${item.name}
                                 </a>
-                            </div>
-                            <div class="column is-one-fifth">
-                                <p>${item.price}</p>
+                                &nbsp;${item.price}&euro;
                             </div>
                             <div class="column">
                                 <div class="field">
@@ -108,7 +106,7 @@
                     </c:forEach>
                     <div class="level">
                         <div class="level-right">
-                            <p>Total price: ${cart.totalPrice}</p>
+                            <p>Total price: ${cart.totalPrice}&euro;</p>
                         </div>
                     </div>
                     <div class="level">

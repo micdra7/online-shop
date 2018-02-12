@@ -1,6 +1,10 @@
 package drabik.michal.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_details")
@@ -11,27 +15,42 @@ public class UserDetails {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "Name must not be empty")
+    @Size(max = 60, message = "Name should have max 60 characters")
     @Column(name = "name")
     private String name;
 
+    @NotNull(message = "Surname must not be empty")
+    @Size(max = 60, message = "Surname should have max 60 characters")
     @Column(name = "surname")
     private String surname;
 
+    @NotNull(message = "Country must not be empty")
+    @Size(max = 50, message = "Country should have max 50 characters")
     @Column(name = "country")
     private String country;
 
+    @NotNull(message = "City must not be empty")
+    @Size(max = 60, message = "City should have max 60 characters")
     @Column(name = "city")
     private String city;
 
+    @NotNull(message = "Street must not be empty")
+    @Size(max = 100, message = "Street should have max 100 characters")
     @Column(name = "street")
     private String street;
 
+    @NotNull(message = "House number must not be empty")
+    @Max(value = 999, message = "House number cannot exceed 999")
     @Column(name = "house_number")
     private Integer houseNumber;
 
+    @Max(value = 999, message = "Flat number cannot exceed 999")
     @Column(name = "flat_number")
     private Integer flatNumber;
 
+    @NotNull(message = "Email must not be empty")
+    @Email(message = "Email does not have a proper form")
     @Column(name = "email")
     private String email;
 

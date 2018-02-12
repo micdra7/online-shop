@@ -98,9 +98,18 @@
                             <div class="column has-text-centered">
                                 <p>Price: ${product.price}&euro;</p>
                                 <p>Quantity: ${product.quantity}</p>
-                                <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${product.id}">
-                                    Add to cart
-                                </a>
+                                <c:choose>
+                                    <c:when test="${product.quantity > 0}">
+                                        <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                            Add to cart
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="button is-info" disabled>
+                                            Out of stock
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

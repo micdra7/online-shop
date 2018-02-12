@@ -51,9 +51,25 @@ public class HomeController {
         List<Order> orders = orderService.getAllOrdersAfter(calendar.getTime());
         List<Product> displayed = new LinkedList<>();
 
-        for (int i = 0; i < 5 && i < orders.size(); i++) {
+        int max = 5;
+
+        for (int i = 0; i < max && i < orders.size(); i++) {
             List<OrderDetails> details = orderService.getDetailsForOrder(orders.get(i).getId());
-            displayed.add(orderDetailsService.getProductForOrderDetails(details.get(0).getId()));
+            Product product = orderDetailsService.getProductForOrderDetails(details.get(0).getId());
+            boolean contains = false;
+
+            for (Product p : displayed) {
+                if (p.getId().equals(product.getId())) {
+                    contains = true;
+                    break;
+                }
+            }
+
+            if (!contains) {
+                displayed.add(product);
+            } else {
+                max++;
+            }
         }
 
         model.addAttribute("products", displayed);

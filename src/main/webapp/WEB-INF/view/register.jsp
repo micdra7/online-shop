@@ -100,19 +100,21 @@
                                                 <div class="field">
                                                     <label class="label">Username<sup>*</sup></label>
                                                     <p class="control has-icons-left">
-                                                        <form:input path="username" cssClass="input"/>
+                                                        <form:input path="username" cssClass="input" placeholder="Username"/>
                                                         <span class="icon is-small is-left">
                                                             <i class="fas fa-user"></i>
                                                         </span>
+                                                        <form:errors path="username" cssClass="has-text-danger"/>
                                                     </p>
                                                 </div>
                                                 <div class="field">
                                                     <label class="label">Password<sup>*</sup></label>
                                                     <p class="control has-icons-left">
-                                                        <form:password path="password" cssClass="input"/>
+                                                        <form:password path="password" cssClass="input" placeholder="Password"/>
                                                         <span class="icon is-small is-left">
                                                             <i class="fas fa-lock"></i>
                                                         </span>
+                                                        <form:errors path="password" cssClass="has-text-danger"/>
                                                     </p>
                                                 </div>
                                             </div>
@@ -121,67 +123,76 @@
                                                     <div class="field">
                                                         <label class="label">Name<sup>*</sup></label>
                                                         <p class="control">
-                                                            <form:input path="name" cssClass="input"/>
+                                                            <form:input path="name" cssClass="input" placeholder="John"/>
+                                                            <form:errors path="name" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Surname<sup>*</sup></label>
                                                         <p class="control">
-                                                            <form:input path="surname" cssClass="input"/>
+                                                            <form:input path="surname" cssClass="input" placeholder="Doe"/>
+                                                            <form:errors path="surname" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Email<sup>*</sup></label>
                                                         <p class="control has-icons-left">
-                                                            <form:input path="email" cssClass="input"/>
+                                                            <form:input path="email" cssClass="input" placeholder="john.doe@domain.com"/>
                                                             <span class="icon is-small is-left">
                                                                 <i class="fas fa-envelope"></i>
                                                             </span>
+                                                            <form:errors path="email" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Phone</label>
                                                         <p class="control has-icons-left">
-                                                            <form:input path="phone" cssClass="input"/>
+                                                            <form:input path="phone" cssClass="input" placeholder="123456789"/>
                                                             <span class="icon is-small is-left">
                                                                 <i class="fas fa-phone"></i>
                                                             </span>
+                                                            <form:errors path="phone" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Country<sup>*</sup></label>
                                                         <p class="control has-icons-left">
-                                                            <form:input path="country" cssClass="input"/>
+                                                            <form:input path="country" cssClass="input" placeholder="United Kingdom"/>
                                                             <span class="icon is-small is-left">
                                                                 <i class="fas fa-globe"></i>
                                                             </span>
+                                                            <form:errors path="country" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">City<sup>*</sup></label>
                                                         <p class="control">
-                                                            <form:input path="city" cssClass="input"/>
+                                                            <form:input path="city" cssClass="input" placeholder="London"/>
+                                                            <form:errors path="city" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Street<sup>*</sup></label>
                                                         <p class="control has-icons-left">
-                                                            <form:input path="street" cssClass="input"/>
+                                                            <form:input path="street" cssClass="input" placeholder="Bakers"/>
                                                             <span class="icon is-small is-left">
                                                                 <i class="fas fa-road"></i>
                                                             </span>
+                                                            <form:errors path="street" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">House number<sup>*</sup></label>
                                                         <p class="control">
-                                                            <form:input path="houseNumber" cssClass="input"/>
+                                                            <form:input path="houseNumber" cssClass="input" placeholder="10"/>
+                                                            <form:errors path="houseNumber" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                     <div class="field">
                                                         <label class="label">Flat number</label>
                                                         <p class="control">
-                                                            <form:input path="flatNumber" cssClass="input"/>
+                                                            <form:input path="flatNumber" cssClass="input" placeholder="24"/>
+                                                            <form:errors path="flatNumber" cssClass="has-text-danger"/>
                                                         </p>
                                                     </div>
                                                 </form:form>

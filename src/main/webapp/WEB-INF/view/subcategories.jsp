@@ -88,9 +88,18 @@
                             </div>
                             <div class="media-right has-text-centered">
                                 <p>${item.price}&euro;</p>
-                                <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
-                                    Add to cart
-                                </a>
+                                <c:choose>
+                                    <c:when test="${item.quantity > 0}">
+                                        <a class="button is-info is-inverted" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                            Add to cart
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a class="button is-info is-inverted" disabled>
+                                            Out of stock
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

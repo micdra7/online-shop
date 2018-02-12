@@ -82,14 +82,14 @@
                         </div>
                         <div class="column">
                             <p>Quantity: ${item.selectedQuantity}</p>
-                            <p>Unit price: ${item.price}</p>
+                            <p>Unit price: ${item.price}&euro;</p>
                         </div>
                     </div>
                 </c:forEach>
                 <div class="level">
                     <div class="level-right">
                         <div class="level-item">
-                            <p>Total price: ${price}</p>
+                            <p>Total price: ${price}&euro;</p>
                         </div>
                     </div>
                 </div>

@@ -82,6 +82,11 @@
                                 <p class="subtitle">Invalid username and/or password</p>
                             </div>
                         </c:if>
+                        <c:if test="${param.success != null}">
+                            <div class="notification is-success has-text-centered">
+                                <p class="subtitle">${param.success}</p>
+                            </div>
+                        </c:if>
                         <h1 class="title">Log in form</h1>
                         <div class="level">
                             <div class="level-item">

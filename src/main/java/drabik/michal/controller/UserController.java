@@ -8,15 +8,16 @@ import drabik.michal.service.UserDetailsService;
 import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -33,6 +34,12 @@ public class UserController {
     private UserDetailsService userDetailsService;
     @Autowired
     private RoleService roleService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor editor = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, editor);
+    }
 
     @GetMapping("/user")
     public String user(@RequestParam("username") String username,
@@ -84,11 +91,16 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public String register(@ModelAttribute("user") User user,
-                           @ModelAttribute("userDetails") UserDetails details,
+    public String register(@Valid @ModelAttribute("user") User user,
+                           BindingResult result,
+                           @Valid @ModelAttribute("userDetails") UserDetails details,
+                           BindingResult result1,
                            Model model,
                            HttpSession session) {
         Cart.createInstanceIfNotExisting(session);
+        if (result.hasErrors() || result1.hasErrors()) {
+            return "register";
+        }
         return processRegistration(user, details, model);
     }
 
@@ -97,11 +109,7 @@ public class UserController {
         if (userService.getUser(user.getUsername()) != null) {
             error.setUsername(UserDataError.EXISTING_USERNAME);
         }
-        if (user.getPassword().length() < 8) {
-            error.setPassword(UserDataError.SHORT_PASSWORD);
-        }
-
-        if (error.getUsername() != null || error.getPassword() != null) {
+        if (error.getUsername() != null) {
             model.addAttribute("user", new User(user.getUsername(), ""));
             model.addAttribute("userDetails", details);
             model.addAttribute("error", error);
@@ -115,6 +123,7 @@ public class UserController {
             details.setUser(toAdd);
             toAdd.setRoles(roles);
             userService.addUser(toAdd);
+            model.addAttribute("success", "User has been successfully created!");
             model.addAttribute("user", new User(user.getUsername(), ""));
             return "redirect:/log-in";
         }

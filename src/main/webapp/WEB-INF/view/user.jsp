@@ -184,7 +184,7 @@
                                             </div>
                                         </div>
                                         <div class="level-item">
-                                            <p>Order value: ${item.value}</p>
+                                            <p>Order value: ${item.value}&euro;</p>
                                         </div>
                                         <div class="level-right">
                                             <div class="level-item">

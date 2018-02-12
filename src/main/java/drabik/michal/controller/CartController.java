@@ -129,17 +129,22 @@ public class CartController {
                 OrderDetails details = new OrderDetails(price, quantity, price*quantity);
                 details.setOrder(order);
                 Product product = productService.getProduct(data.getProducer(), data.getName());
-                product.setQuantity(product.getQuantity() - data.getSelectedQuantity());
-                details.setProduct(product);
-                order.getDetails().add(details);
-                productService.updateProduct(product);
+                if (product.getQuantity() == 0) {
+                    data.setSelectedQuantity(0);
+                    cart.updateTotalPrice();
+                    return "redirect:/cart";
+                } else {
+                    product.setQuantity(product.getQuantity() - data.getSelectedQuantity());
+                    productService.updateProduct(product);
+                    details.setProduct(product);
+                    order.getDetails().add(details);
+                }
             }
             orderService.addOrder(order);
 
+            session.removeAttribute("cart");
+            model.addAttribute("success", "Order has been successfully placed!");
         }
-
-        session.removeAttribute("cart");
-
         return "redirect:/";
     }
 }

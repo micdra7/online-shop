@@ -1,6 +1,8 @@
 package drabik.michal.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -11,9 +13,13 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "Username cannot be empty")
+    @Size(min = 6, max = 64, message = "Username must have between 6 and 64 characters")
     @Column(name = "username")
     private String username;
 
+    @NotNull(message = "Password cannot be empty")
+    @Size(min = 8, message = "Password must have at least 8 characters")
     @Column(name = "password")
     private String password;
 

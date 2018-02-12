@@ -1,6 +1,3 @@
 .idea
 src/main/resources/images
-src/main/resources/db.properties
-src/main/webapp/resources/db.properties
-/*/*.properties
 src/main/webapp/resources/images

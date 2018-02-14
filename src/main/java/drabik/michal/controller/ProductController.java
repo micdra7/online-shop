@@ -4,7 +4,11 @@ import drabik.michal.cart.data.Cart;
 import drabik.michal.entity.Product;
 import drabik.michal.entity.Review;
 import drabik.michal.service.ProductService;
+import drabik.michal.service.ReviewService;
+import drabik.michal.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,10 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private UserService userService;
 
 
     @RequestMapping("/product")
@@ -28,6 +36,7 @@ public class ProductController {
                           HttpSession session) {
         Cart.createInstanceIfNotExisting(session);
         listProductParameters(id, model);
+        checkUsersReviewsForProduct(id, model);
         return "product";
     }
 
@@ -55,5 +64,30 @@ public class ProductController {
         }
 
         model.addAttribute("reviews", listedReviews);
+
+    }
+
+    private void checkUsersReviewsForProduct(Long productId, Model model) {
+
+        Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User springUser;
+        if (user instanceof User) {
+            springUser = (User) user;
+        } else {
+            model.addAttribute("review", "");
+            return;
+        }
+
+        drabik.michal.entity.User myUser = userService.getUser(springUser.getUsername());
+
+        List<Review> reviews = userService.getReviewsForUser(myUser.getId());
+
+        for (Review review : reviews) {
+            if (review.getProduct().getId().equals(productId)) {
+                model.addAttribute("review", "");
+                return;
+            }
+        }
+        model.addAttribute("review", null);
     }
 }

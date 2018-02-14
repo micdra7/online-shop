@@ -27,7 +27,7 @@
         <meta name="msapplication-config" content="${pageContext.request.contextPath}/resources/images/favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
         
-        <title>Cart | Online PC shop</title>
+        <title>Review | Online PC shop</title>
     </head>
     <body>
         <nav class="navbar is-fixed-top is-info">
@@ -87,48 +87,35 @@
         </nav>
         <section class="section">
             <div class="box container">
-                <form:form action="${pageContext.request.contextPath}/pay" method="post" modelAttribute="cart.products">
-                    <c:forEach var="item" items="${cart.products}" varStatus="loop">
-                        <div class="columns">
-                            <div class="column is-four-fifths">
-                                <a href="${pageContext.request.contextPath}/product?id=${item.id}" class="link">
-                                    ${item.producer} ${item.name}
-                                </a>
-                                &nbsp;${item.price}&euro;
-                            </div>
-                            <div class="column">
-                                <div class="field">
-                                    <form action="${pageContext.request.contextPath}/update-cart" method="post" id="quantity">
-                                        <p class="control">
-                                            <input type="hidden" value="${item.id}" id="id${loop.index}"/>
-                                            <input type="number" class="input" value="${item.selectedQuantity}" id="selectedQuantity${loop.index}"/>
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-info" onClick="updateQuantity('${pageContext.request.contextPath}', ${loop.index});">
-                                                Update quantity
-                                            </a>                          
-                                            <a class="delete" 
-                                                    onClick="deleteFromCart('${pageContext.request.contextPath}', '${loop.index}')">
-                                            </a>
-                                        </p>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
-                    <div class="level">
-                        <div class="level-right">
-                            <p>Total price: ${cart.totalPrice}&euro;</p>
-                        </div>
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <h4 class="title">Review for ${product.producer} ${product.name}</h4>
                     </div>
-                    <div class="level">
-                        <div class="level-item">
-                            <a class="button is-info" onClick="proceedWithPayment('${pageContext.request.contextPath}');">
-                                Proceed to payment
-                            </a>
-                        </div>
+                    <div class="column box">
+                        <form:form action="${pageContext.request.contextPath}/add-review" 
+                                   method="post" modelAttribute="review">
+                            <div class="field">
+                                <label class="label">Rating [1-6]</label>
+                                <p class="control">
+                                    <form:input path="rating" cssClass="input"/>
+                                    <form:errors path="rating" cssClass="has-text-danger"/>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label class="label">Review</label>
+                                <p class="control">
+                                    <form:textarea path="rating" cssClass="input" style="max-height: 400px;"/>
+                                    <form:errors path="rating" cssClass="has-text-danger"/>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control has-text-centered">
+                                    <input type="submit" class="button is-info">
+                                </p>
+                            </div>
+                        </form:form>
                     </div>
-                </form:form>
+                </div>
             </div>
         </section>
         <footer class="footer">

@@ -67,6 +67,9 @@ public class CartController {
         Cart c = (Cart) session.getAttribute("cart");
         for (ProductData product : c.getProducts()) {
             if (product.getId().equals(productId)) {
+                if (product.getQuantity() < selectedQuantity) {
+                    selectedQuantity = product.getQuantity();
+                }
                 product.setSelectedQuantity(selectedQuantity);
             }
             c.updateProductQuantity(productId, selectedQuantity);
@@ -118,6 +121,10 @@ public class CartController {
         org.springframework.security.core.userdetails.User user =
                 (org.springframework.security.core.userdetails.User)SecurityContextHolder
                         .getContext().getAuthentication().getPrincipal();
+
+        if (cart.getProducts().isEmpty()) {
+            return "redirect:/cart";
+        }
 
         if (user != null) {
             order.setUser(userService.getUser(user.getUsername()));

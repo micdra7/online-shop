@@ -1,12 +1,11 @@
 package drabik.michal.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "subcategories")
-public class Subcategory implements Serializable {
+public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

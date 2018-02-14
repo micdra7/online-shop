@@ -41,6 +41,8 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers("/user").authenticated()
                 .antMatchers("/pay").authenticated()
+                .antMatchers("/review").authenticated()
+                .antMatchers("/add-review").authenticated()
                 .antMatchers("/").permitAll()
                 .antMatchers("/categories").permitAll()
                 .antMatchers("/subcategories").permitAll()

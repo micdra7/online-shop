@@ -104,7 +104,7 @@
                             <div class="field">
                                 <label class="label">Review</label>
                                 <p class="control">
-                                    <form:textarea path="rating" cssClass="input" style="max-height: 400px;"/>
+                                    <form:textarea path="rating" cssClass="input" style="height: 400px;"/>
                                     <form:errors path="rating" cssClass="has-text-danger"/>
                                 </p>
                             </div>

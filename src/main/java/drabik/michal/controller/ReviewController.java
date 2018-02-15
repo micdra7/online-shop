@@ -59,22 +59,10 @@ public class ReviewController {
         }
 
         String content = review.getContent();
-        StringBuilder output = new StringBuilder();
-        boolean carriageReturn = false;
-        for (char c : content.toCharArray()) {
-            if (c == '\r') {
-                carriageReturn = true;
-            } else if (carriageReturn && c == '\n') {
-                output.append("\r\n");
-                carriageReturn = false;
-            } else if (c == '\n') {
-                output.append("\n");
-            } else {
-                output.append(c);
-            }
-        }
+        content = content.replace("\r\n", "<br>");
+        content = content.replace("\n", "<br>");
 
-        review.setContent(output.toString());
+        review.setContent(content);
         review.setUser(userService.getUser(springUser.getUsername()));
         review.setProduct(product);
         review.setDate(Calendar.getInstance().getTime());

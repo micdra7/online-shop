@@ -1,11 +1,11 @@
 package drabik.michal.controller;
 
 import drabik.michal.cart.data.Cart;
+import drabik.michal.entity.Order;
+import drabik.michal.entity.OrderDetails;
 import drabik.michal.entity.Product;
 import drabik.michal.entity.Review;
-import drabik.michal.service.ProductService;
-import drabik.michal.service.ReviewService;
-import drabik.michal.service.UserService;
+import drabik.michal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +28,10 @@ public class ProductController {
     private ReviewService reviewService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private OrderDetailsService orderDetailsService;
 
 
     @RequestMapping("/product")
@@ -58,11 +62,16 @@ public class ProductController {
         });
 
         List<Review> listedReviews = new LinkedList<>();
-
-        for (int i = 0; i < 3 && i < reviews.size(); i++) {
+        double averageRating = 0d;
+        int quantity = 0;
+        for (int i = 0; i < 5 && i < reviews.size(); i++) {
             listedReviews.add(reviews.get(i));
+            averageRating += reviews.get(i).getRating();
+            quantity++;
         }
-
+        averageRating /= quantity;
+        averageRating = (double) Math.round(averageRating * 100.0) / 100.0;
+        model.addAttribute("averageRating", averageRating);
         model.addAttribute("reviews", listedReviews);
 
     }
@@ -74,20 +83,29 @@ public class ProductController {
         if (user instanceof User) {
             springUser = (User) user;
         } else {
-            model.addAttribute("review", "");
+            model.addAttribute("review", "review existing");
             return;
         }
 
         drabik.michal.entity.User myUser = userService.getUser(springUser.getUsername());
 
+        List<Order> orders = userService.getOrdersForUser(myUser.getId());
         List<Review> reviews = userService.getReviewsForUser(myUser.getId());
+        for (Order order : orders) {
+            List<OrderDetails> details = orderService.getDetailsForOrder(order.getId());
 
-        for (Review review : reviews) {
-            if (review.getProduct().getId().equals(productId)) {
-                model.addAttribute("review", "");
-                return;
+            for (OrderDetails detail : details) {
+                for (Review review : reviews) {
+                    if (detail.getProduct().getId().equals(productId)) {
+                        model.addAttribute("review", "review existing");
+                        return;
+                    }
+                }
             }
         }
+
+
         model.addAttribute("review", null);
     }
+
 }

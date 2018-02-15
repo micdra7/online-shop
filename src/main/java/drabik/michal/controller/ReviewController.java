@@ -1,7 +1,6 @@
 package drabik.michal.controller;
 
 import drabik.michal.cart.data.Cart;
-import drabik.michal.entity.Product;
 import drabik.michal.entity.Review;
 import drabik.michal.service.ProductService;
 import drabik.michal.service.ReviewService;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.Calendar;
 
 @Controller
@@ -39,12 +39,18 @@ public class ReviewController {
     }
 
     @RequestMapping("/add-review")
-    public String addReview(@ModelAttribute("product") Product product,
-                            @ModelAttribute("review") Review review,
+    public String addReview(@RequestParam("productId") Long productId,
+                            @Valid @ModelAttribute("review") Review review,
                             BindingResult result,
                             Model model,
                             HttpSession session) {
         Cart.createInstanceIfNotExisting(session);
+
+        if (result.hasErrors()) {
+            model.addAttribute("review", review);
+            model.addAttribute("product", productService.getProduct(productId));
+            return "review";
+        }
 
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User springUser;
@@ -54,22 +60,18 @@ public class ReviewController {
             return "redirect:/log-in";
         }
 
-        if (result.hasErrors()) {
-            return "review";
-        }
-
         String content = review.getContent();
         content = content.replace("\r\n", "<br>");
         content = content.replace("\n", "<br>");
 
         review.setContent(content);
         review.setUser(userService.getUser(springUser.getUsername()));
-        review.setProduct(product);
+        review.setProduct(productService.getProduct(productId));
         review.setDate(Calendar.getInstance().getTime());
 
         reviewService.addReview(review);
 
-        return "redirect:/review";
+        return "redirect:/";
     }
 
 }

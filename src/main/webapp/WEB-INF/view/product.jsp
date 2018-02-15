@@ -100,12 +100,24 @@
                     <div class="hero-body">
                         <div class="columns is-mobile">
                             <div class="column is-two-thirds has-text-centered">
-                                <h4 class="subtitle">
-                                    <a class="link" href="${pageContext.request.contextPath}/product?id=${product.id}">
-                                        ${product.producer}&nbsp;${product.name}
-                                    </a>
-                                </h4>
-                                <p>${product.description}</p>
+                                <div class="card">
+                                    <div class="card-header has-text-centered">
+                                        <h4 class="subtitle">
+                                            <a class="link" href="${pageContext.request.contextPath}/product?id=${product.id}">
+                                                ${product.producer}&nbsp;${product.name}
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div class="card-image">
+                                        <figure>
+                                            <img src="${pageContext.request.contextPath}/resources/images/product/${product.id}.png" 
+                                                 alt="Product image" width="256">
+                                        </figure>
+                                    </div>
+                                    <div class="card-content">
+                                        <p>${product.description}</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="column has-text-centered">
                                 <p>Price: ${product.price}&euro;</p>
@@ -129,10 +141,15 @@
                         <div class="level">
                             <div class="level-left">
                                 <div class="level-item">
-                                    <p class="subtitle">Recent reviews for this product</p>
+                                    <div class="columns">
+                                        <div class="column">
+                                            <p class="subtitle">Recent reviews for this product</p>
+                                            <p>Average rating: ${averageRating}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <c:if test="${review == null}">
+                            <c:if test="${review != 'review existing'}">
                                 <div class="level-right">
                                     <div class="level-item">
                                         <a class="button is-info" href="${pageContext.request.contextPath}/review?productId=${product.id}">
@@ -142,16 +159,16 @@
                                 </div>
                             </c:if>
                         </div>
-                        <c:forEach var="review" items="${reviews}">
+                        <c:forEach var="item" items="${reviews}">
                             <div class="columns">
                                 <div class="column has-text-left-desktop has-text-center-touch">
-                                    <p><strong>Rating: ${review.rating}/6</strong></p>
+                                    <p><strong>Rating: ${item.rating}/6</strong></p>
                                 </div>
                                 <div class="column has-text-left">
-                                    <p>${review.content}</p>
+                                    <p>${item.content}</p>
                                 </div>
                                 <div class="column has-text-right-desktop has-text-center-touch">
-                                    <p>${review.date}</p>
+                                    <p>${item.date}</p>
                                 </div>
                             </div>
                         </c:forEach>

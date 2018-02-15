@@ -92,7 +92,7 @@
                         <h4 class="title">Review for ${product.producer} ${product.name}</h4>
                     </div>
                     <div class="column box">
-                        <form:form action="${pageContext.request.contextPath}/add-review" 
+                        <form:form action="${pageContext.request.contextPath}/add-review?productId=${product.id}" 
                                    method="post" modelAttribute="review">
                             <div class="field">
                                 <label class="label">Rating [1-6]</label>
@@ -104,8 +104,8 @@
                             <div class="field">
                                 <label class="label">Review</label>
                                 <p class="control">
-                                    <form:textarea path="rating" cssClass="input" style="height: 400px;"/>
-                                    <form:errors path="rating" cssClass="has-text-danger"/>
+                                    <form:textarea path="content" cssClass="input" style="height: 400px;"/>
+                                    <form:errors path="content" cssClass="has-text-danger"/>
                                 </p>
                             </div>
                             <div class="field">

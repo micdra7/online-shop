@@ -48,6 +48,8 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/subcategories").permitAll()
                 .antMatchers("/product").permitAll()
                 .antMatchers("/cart").permitAll()
+                .antMatchers("/search").permitAll()
+                .antMatchers("/search-results").permitAll()
 
                 .and()
                 .formLogin()

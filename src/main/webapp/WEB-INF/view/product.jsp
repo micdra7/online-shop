@@ -57,6 +57,9 @@
                     <a class="navbar-item" href="${pageContext.request.contextPath}/categories">
                         Categories
                     </a>
+                    <a class="navbar-item" href="${pageContext.request.contextPath}/search">
+                        Search
+                    </a>
                 </div>
                 <div class="navbar-end">
                     <security:authorize access="isAuthenticated()">
@@ -98,23 +101,25 @@
                         </header>
                     </div>
                     <div class="hero-body">
-                        <div class="columns is-mobile">
-                            <div class="column is-two-thirds has-text-centered">
+                        <div class="columns is-tablet">
+                            <div class="column is-two-thirds">
                                 <div class="card">
-                                    <div class="card-header has-text-centered">
-                                        <h4 class="subtitle">
-                                            <a class="link" href="${pageContext.request.contextPath}/product?id=${product.id}">
-                                                ${product.producer}&nbsp;${product.name}
-                                            </a>
-                                        </h4>
+                                    <div class="card-header">
+                                        <div class="card-header-title is-centered">
+                                            <h4 class="subtitle">
+                                                <a class="link" href="${pageContext.request.contextPath}/product?id=${product.id}">
+                                                    ${product.producer}&nbsp;${product.name}
+                                                </a>
+                                            </h4>
+                                        </div>
                                     </div>
-                                    <div class="card-image">
+                                    <div class="card-image has-text-centered">
                                         <figure>
                                             <img src="${pageContext.request.contextPath}/resources/images/product/${product.id}.png" 
                                                  alt="Product image" width="256">
                                         </figure>
                                     </div>
-                                    <div class="card-content">
+                                    <div class="card-content  has-text-left-mobile has-text-centered-desktop">
                                         <p>${product.description}</p>
                                     </div>
                                 </div>
@@ -124,7 +129,7 @@
                                 <p>Quantity: ${product.quantity}</p>
                                 <c:choose>
                                     <c:when test="${product.quantity > 0}">
-                                        <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${item.id}">
+                                        <a class="button is-info" href="${pageContext.request.contextPath}/add-to-cart?id=${product.id}">
                                             Add to cart
                                         </a>
                                     </c:when>

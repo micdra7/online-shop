@@ -96,7 +96,7 @@ public class ProductController {
 
             for (OrderDetails detail : details) {
                 for (Review review : reviews) {
-                    if (detail.getProduct().getId().equals(productId)) {
+                    if (detail.getProduct().getId().equals(productId) && review.getProduct().getId().equals(productId)) {
                         model.addAttribute("review", "review existing");
                         return;
                     }

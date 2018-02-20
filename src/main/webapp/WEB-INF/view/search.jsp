@@ -27,7 +27,7 @@
         <meta name="msapplication-config" content="${pageContext.request.contextPath}/resources/images/favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
         
-        <title>Log in | Online PC shop</title>
+        <title>Search | Online PC shop</title>
     </head>
     <body>
         <nav class="navbar is-fixed-top is-info">
@@ -89,55 +89,20 @@
             </div>
         </nav>
         <section class="section">
-            <div class="box container">
-                <div class="columns">
-                    <div class="column">
-                        <c:if test="${param.error != null}">
-                            <div class="notification is-danger has-text-centered">
-                                <p class="subtitle">Invalid username and/or password</p>
-                            </div>
-                        </c:if>
-                        <c:if test="${param.success != null}">
-                            <div class="notification is-success has-text-centered">
-                                <p class="subtitle">${param.success}</p>
-                            </div>
-                        </c:if>
-                        <h1 class="title">Log in form</h1>
-                        <div class="level">
-                            <div class="level-item">
-                                <form:form action="${pageContext.request.contextPath}/authenticate" method="post" modelAttribute="user">
-                                    <div class="field">
-                                        <label class="label">Username</label>
-                                        <p class="control has-icons-left">
-                                            <form:input path="username" cssClass="input"/>
-                                            <span class="icon is-small is-left">
-                                                <i class="fas fa-user"></i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="field">
-                                        <label class="label">Password</label>
-                                        <p class="control has-icons-left">
-                                            <form:password path="password" cssClass="input"/>
-                                            <span class="icon is-small is-left">
-                                                <i class="fas fa-lock"></i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="field">
-                                        <div class="level">
-                                            <div class="level-item">
-                                                <p class="control">
-                                                    <button class="button is-info">Log in</button>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form:form>
+            <div class="box container has-text-centered">
+                <form:form action="${pageContext.request.contextPath}/search-results?page=1" method="post" modelAttribute="searchData">
+                    <div class="level">
+                        <div class="level-item">
+                            <div class="field">
+                                <label class="label">Search: </label>
+                                <p class="control">
+                                    <form:input path="queryString"/>
+                                    <input type="submit" value="Search">
+                                </p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form:form>
             </div>
         </section>
         <footer class="footer">

@@ -27,7 +27,7 @@
         <meta name="msapplication-config" content="${pageContext.request.contextPath}/resources/images/favicon/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
         
-        <title>Home page | Online PC shop</title>
+        <title>Search results | Online PC shop</title>
     </head>
     <body>
         <nav class="navbar is-fixed-top is-info">
@@ -89,13 +89,7 @@
             </div>
         </nav>
         <section class="section">
-            <div class="box container">
-                <c:if test="${param.success != null}">
-                    <div class="notification is-success">
-                        <p>${param.success}</p>
-                    </div>
-                </c:if>
-                <h1 class="title">Recently purchased</h1>
+            <div class="box container has-text-centered">
                 <c:forEach var="item" items="${products}">
                     <div class="notification is-info">
                         <div class="media">
@@ -125,6 +119,111 @@
                         </div>
                     </div>
                 </c:forEach>
+                <nav class="pagination is-centered">
+                    <c:choose>
+                        <c:when test="${page == 1}">
+                            <a class="pagination-previous" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                Previous
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="pagination-previous" href="${pageContext.request.contextPath}/search-results?page=${page-1}">
+                                Previous
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test="${page == maxPages}">
+                            <a class="pagination-next" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                Next
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="pagination-next" href="${pageContext.request.contextPath}/search-results?page=${page+1}">
+                                Next
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                    <ul class="pagination-list">
+                        <c:if test="${maxPages > 5}">
+                            <li>
+                                <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=1">
+                                    1
+                                </a>
+                            </li>
+                            <c:if test="${page > 2}">
+                                <li>
+                                    <span class="pagination-ellipsis">&hellip;</span>
+                                </li>
+                                <li>
+                                    <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=${page-1}">
+                                        ${page-1}
+                                    </a>
+                                </li>
+                            </c:if>
+                            <c:choose>
+                                <c:when test="${page <= (maxPages-2)}">
+                                    <li>
+                                        <a class="pagination-link is-current" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                            ${page}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=${page+1}">
+                                            ${page+1}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span class="pagination-ellipsis">&hellip;</span>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=${maxPages}">
+                                            ${maxPages}
+                                        </a>
+                                    </li>
+                                </c:when>
+                                <c:when test="${page == (maxPages-1)}">
+                                    <li>
+                                        <a class="pagination-link is-current" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                            ${page}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=${page+1}">
+                                            ${page+1}
+                                        </a>
+                                    </li>
+                                </c:when>
+                                <c:when test="${page == maxPages}">
+                                    <li>
+                                        <a class="pagination-link is-current" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                            ${page}
+                                        </a>
+                                    </li>
+                                </c:when>
+                            </c:choose>
+                        </c:if>
+                        <c:if test="${maxPages <= 5}">
+                            <c:forEach begin="1" end="${maxPages}" varStatus="loop">
+                                <li>
+                                    <c:choose>
+                                        <c:when test="${loop.index == page}">
+                                            <a class="pagination-link is-current" href="${pageContext.request.contextPath}/search-results?page=${page}">
+                                                ${page}
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="pagination-link" href="${pageContext.request.contextPath}/search-results?page=${loop.index}">
+                                                ${loop.index}
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </li>
+                            </c:forEach>
+                        </c:if>
+                    </ul>
+                </nav>
             </div>
         </section>
         <footer class="footer">

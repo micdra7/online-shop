@@ -57,6 +57,9 @@
                     <a class="navbar-item" href="${pageContext.request.contextPath}/categories">
                         Categories
                     </a>
+                    <a class="navbar-item" href="${pageContext.request.contextPath}/search">
+                        Search
+                    </a>
                 </div>
                 <div class="navbar-end">
                     <security:authorize access="isAuthenticated()">

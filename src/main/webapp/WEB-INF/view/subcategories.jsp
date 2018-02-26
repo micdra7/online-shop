@@ -92,8 +92,8 @@
             <div class="box container">
                 <c:forEach var="item" items="${products}">
                     <div class="notification is-info">
-                        <div class="media">
-                            <div class="media-content">
+                        <div class="columns">
+                            <div class="column">
                                 <h4 class="subtitle">
                                     <a class="link" href="${pageContext.request.contextPath}/product?id=${item.id}">
                                         ${item.producer}&nbsp;${item.name}
@@ -101,7 +101,7 @@
                                 </h4>
                                 <p>${item.description}</p>
                             </div>
-                            <div class="media-right has-text-centered">
+                            <div class="column has-text-centered-mobile has-text-right-tablet">
                                 <p>${item.price}&euro;</p>
                                 <c:choose>
                                     <c:when test="${item.quantity > 0}">

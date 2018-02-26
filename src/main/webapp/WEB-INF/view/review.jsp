@@ -91,10 +91,8 @@
         <section class="section">
             <div class="box container">
                 <div class="columns">
-                    <div class="column is-one-fifth">
+                    <div class="column">
                         <h4 class="title">Review for ${product.producer} ${product.name}</h4>
-                    </div>
-                    <div class="column box">
                         <form:form action="${pageContext.request.contextPath}/add-review?productId=${product.id}" 
                                    method="post" modelAttribute="review">
                             <div class="field">
@@ -113,7 +111,7 @@
                             </div>
                             <div class="field">
                                 <p class="control has-text-centered">
-                                    <input type="submit" class="button is-info">
+                                    <input type="submit" class="button is-info" value="Add a review">
                                 </p>
                             </div>
                         </form:form>

@@ -106,21 +106,30 @@
                                             <input type="hidden" value="${item.id}" id="id${loop.index}"/>
                                             <input type="number" class="input" value="${item.selectedQuantity}" id="selectedQuantity${loop.index}"/>
                                         </p>
-                                        <p class="control">
-                                            <a class="button is-info" onClick="updateQuantity('${pageContext.request.contextPath}', ${loop.index});">
-                                                Update quantity
-                                            </a>                          
-                                            <a class="delete" 
-                                                    onClick="deleteFromCart('${pageContext.request.contextPath}', '${loop.index}')">
-                                            </a>
-                                        </p>
+                                        <div class="level is-mobile">
+                                            <div class="level-left">
+                                                <div class="level-item">
+                                                    <a class="button is-info" onClick="updateQuantity('${pageContext.request.contextPath}', ${loop.index});">
+                                                        Update quantity
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="level-right">
+                                                <div class="level-item">
+                                                    <a class="delete" onClick="deleteFromCart('${pageContext.request.contextPath}', '${loop.index}')">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                        <br>
                     </c:forEach>
                     <div class="level">
                         <div class="level-right">
+                            <br>
                             <p>Total price: ${cart.totalPrice}&euro;</p>
                         </div>
                     </div>

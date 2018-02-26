@@ -108,7 +108,8 @@
                                         <div class="card-header-title is-centered">
                                             <h4 class="subtitle">
                                                 <a class="link" href="${pageContext.request.contextPath}/product?id=${product.id}">
-                                                    ${product.producer}&nbsp;${product.name}
+                                                    <p>${product.producer}</p>
+                                                    <p>${product.name}</p>
                                                 </a>
                                             </h4>
                                         </div>

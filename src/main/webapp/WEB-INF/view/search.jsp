@@ -91,15 +91,19 @@
         <section class="section">
             <div class="box container has-text-centered">
                 <form:form action="${pageContext.request.contextPath}/search-results?page=1" method="post" modelAttribute="searchData">
-                    <div class="level">
-                        <div class="level-item">
-                            <div class="field">
-                                <label class="label">Search: </label>
-                                <p class="control">
-                                    <form:input path="queryString"/>
-                                    <input type="submit" value="Search">
-                                </p>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="level">
+                                <div class="level-item">
+                                    <div class="field">
+                                        <label class="label">Search: </label>
+                                        <p class="control">
+                                            <form:input path="queryString" cssClass="input"/>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
+                            <input type="submit" value="Search" class="button is-info">
                         </div>
                     </div>
                 </form:form>

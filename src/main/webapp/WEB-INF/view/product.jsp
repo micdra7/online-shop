@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <c:if test="${review != 'review existing'}">
+                            <c:if test="${review == 'review existing'}">
                                 <div class="level-right">
                                     <div class="level-item">
                                         <a class="button is-info" href="${pageContext.request.contextPath}/review?productId=${product.id}">

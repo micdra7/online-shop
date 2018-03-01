@@ -26,7 +26,8 @@ public class User {
     @Column(name = "enabled")
     private Integer enabled;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,
+            mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetails details;
 
     @ManyToMany(cascade = CascadeType.ALL)

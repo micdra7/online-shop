@@ -1,7 +1,5 @@
 package drabik.michal.entity;
 
-import org.hibernate.annotations.Formula;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,14 +26,12 @@ public class Product {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Formula(value = "concat(producer, ' ', name)")
-    private String fullName;
-
     @OneToMany(mappedBy = "product",
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<OrderDetails> details;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 

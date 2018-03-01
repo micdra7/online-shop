@@ -9,6 +9,7 @@ import java.util.List;
 public interface ReviewService {
     void addReview(Review review);
     Review getReview(long id);
+    Review getReviewForUserAndProduct(long userId, long productId);
     List<Review> getAllReviews();
     User getUserForReview(long reviewId);
     Product getProductForReview(long reviewId);

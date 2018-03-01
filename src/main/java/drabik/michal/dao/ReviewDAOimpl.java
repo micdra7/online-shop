@@ -27,6 +27,21 @@ public class ReviewDAOimpl implements ReviewDAO {
     }
 
     @Override
+    public Review getReviewForUserAndProduct(long userId, long productId) {
+        Query<Review> query = factory.getCurrentSession().createQuery("from Review r " +
+                "where r.user.id=:uid and r.product.id=:pid");
+        query.setParameter("uid", userId);
+        query.setParameter("pid", productId);
+        Review review;
+        try {
+            review = query.getSingleResult();
+        } catch (Exception e) {
+            review = null;
+        }
+        return review;
+    }
+
+    @Override
     public List<Review> getAllReviews() {
         Query<Review> query = factory.getCurrentSession().createQuery("from Review");
         return query.getResultList();

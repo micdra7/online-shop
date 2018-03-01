@@ -88,24 +88,31 @@ public class ProductController {
         }
 
         drabik.michal.entity.User myUser = userService.getUser(springUser.getUsername());
-
         List<Order> orders = userService.getOrdersForUser(myUser.getId());
-        List<Review> reviews = userService.getReviewsForUser(myUser.getId());
+        boolean contains = false;
+
         for (Order order : orders) {
             List<OrderDetails> details = orderService.getDetailsForOrder(order.getId());
-
             for (OrderDetails detail : details) {
-                for (Review review : reviews) {
-                    if (detail.getProduct().getId().equals(productId) && review.getProduct().getId().equals(productId)) {
-                        model.addAttribute("review", "review existing");
-                        return;
-                    }
+                if (detail.getProduct().getId().equals(productId)) {
+                    contains = true;
+                    break;
                 }
             }
         }
 
+        if (!contains) {
+            model.addAttribute("review", "review doesn't exist");
+            return;
+        }
 
-        model.addAttribute("review", null);
+        Review review = reviewService.getReviewForUserAndProduct(myUser.getId(), productId);
+
+        if (review != null) {
+            model.addAttribute("review", "review existing");
+        } else {
+            model.addAttribute("review", "review doesn't exist");
+        }
     }
 
 }

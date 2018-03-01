@@ -57,7 +57,8 @@ public class UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 

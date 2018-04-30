@@ -26,10 +26,11 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?")
-                .authoritiesByUsernameQuery("SELECT users.username, roles.name FROM" +
-                        " users INNER JOIN user_roles ON users.id=user_roles.user_id " +
+                .authoritiesByUsernameQuery("SELECT users.username, roles.name " +
+                        "FROM users INNER JOIN user_roles ON users.id=user_roles.user_id " +
                         "INNER JOIN roles ON user_roles.role_id=roles.id " +
-                        "WHERE users.username=?");
+                        "WHERE users.username=?")
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -55,6 +56,8 @@ public class OnlineShopSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/log-in")
                 .loginProcessingUrl("/authenticate")
+                .failureForwardUrl("/log-in?error=true")
+                .successForwardUrl("/")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()

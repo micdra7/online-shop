@@ -9,7 +9,7 @@ import drabik.michal.service.UserService;
 import drabik.michal.validation.UserDataError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +34,8 @@ public class UserController {
     private UserDetailsService userDetailsService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -115,7 +117,7 @@ public class UserController {
             model.addAttribute("error", error);
             return "register";
         } else {
-            User toAdd = new User(user.getUsername(), BCrypt.hashpw(user.getPassword(),  BCrypt.gensalt()));
+            User toAdd = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
             ArrayList<Role> roles = new ArrayList<>();
             roles.add(roleService.getRole(1));
             toAdd.setEnabled(1);
